@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright © 2025 Markus Spann, SpeedBankingDe
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>de.speedbanking</groupId>
+    <artifactId>iban-commons-benchmarks</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>IBAN Commons Benchmarks</name>
+    <description>JMH Microbenchmarks for comparing IBAN validation and object creation performance of popular Java libraries.</description>
+    <url>https://www.speedbanking.de/</url>
+    <inceptionYear>2025</inceptionYear>
+
+    <organization>
+        <name>SpeedBankingDe</name>
+        <url>${project.url}</url>
+    </organization>
+
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>${developer1Id}</id>
+            <name>${developer1Name}</name>
+            <email>${developer1Email}</email>
+        </developer>
+        <developer>
+            <id>${developer2Id}</id>
+            <name>${developer2Name}</name>
+            <email>${developer2Email}</email>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:ssh//git@github.com/${project.organization.name}/${project.artifactId}.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/${project.organization.name}/${project.artifactId}.git</developerConnection>
+        <url>https://github.com/${project.organization.name}/${project.artifactId}/tree/master</url>
+        <tag></tag>
+    </scm>
+
+    <issueManagement>
+        <system>Github</system>
+        <url>${project.url}/issues</url>
+    </issueManagement>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>central</id>
+            <name>Sonatype Central Snapshots</name>
+            <url>${deploy.snapshot.url}</url>
+        </snapshotRepository>
+        <repository>
+            <id>central</id>
+            <name>Sonatype Central Staging Repository</name>
+            <url>https://central.sonatype.com</url>
+        </repository>
+    </distributionManagement>
+
+    <properties>
+        <!-- require Java 11 for iban4j -->
+        <javaVersion>11</javaVersion>
+
+        <jmhMainClass>org.openjdk.jmh.Main</jmhMainClass>
+        <dep.jmh.version>1.37</dep.jmh.version>
+
+        <dep.iban-commons.version>1.8.0</dep.iban-commons.version>
+        <dep.iban4j.version>3.2.11-RELEASE</dep.iban4j.version>
+        <dep.apache-commons-validator.version>1.10.1</dep.apache-commons-validator.version>
+
+        <developer1Id>spannm</developer1Id>
+        <developer1Name>Markus Spann</developer1Name>
+        <developer1Email>spannm@outlook.de</developer1Email>
+
+        <developer2Id>spannn</developer2Id>
+        <developer2Name>Noah Spann</developer2Name>
+        <developer2Email>spannn@outlook.de</developer2Email>
+
+        <maven.compiler.release>${javaVersion}</maven.compiler.release>
+        <maven.compiler.source>${javaVersion}</maven.compiler.source>
+        <maven.compiler.target>${javaVersion}</maven.compiler.target>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss.SSS</maven.build.timestamp.format>
+
+        <check.checkstyle.ruleset>src/test/resources/team/checkstyle-rules.xml</check.checkstyle.ruleset>
+
+        <dep.checkstyle.version>10.26.1</dep.checkstyle.version> <!-- latest Java 11-compatible checkstyle version -->
+
+        <!-- Plugin versions (alphabetically) -->
+        <dep.plugin.checkstyle.version>3.6.0</dep.plugin.checkstyle.version>
+        <dep.plugin.compiler.version>3.14.1</dep.plugin.compiler.version>
+        <dep.plugin.jar.version>3.5.0</dep.plugin.jar.version>
+        <dep.plugin.shade.version>3.6.1</dep.plugin.shade.version>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-core</artifactId>
+            <version>${dep.jmh.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>de.speedbanking</groupId>
+            <artifactId>iban-commons</artifactId>
+            <version>${dep.iban-commons.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.iban4j</groupId>
+            <artifactId>iban4j</artifactId>
+            <version>${dep.iban4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-validator</groupId>
+            <artifactId>commons-validator</artifactId>
+            <version>${dep.apache-commons-validator.version}</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+
+        <defaultGoal>clean verify</defaultGoal>
+
+        <pluginManagement>
+
+            <plugins>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${dep.plugin.compiler.version}</version>
+                    <configuration>
+                        <debug>true</debug>
+                        <debuglevel>lines,vars,source</debuglevel>
+                        <showWarnings>true</showWarnings>
+                        <showDeprecation>true</showDeprecation>
+                        <compilerArgument>-Xlint:all,-options</compilerArgument>
+                        <parameters>true</parameters>
+
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>org.openjdk.jmh</groupId>
+                                <artifactId>jmh-generator-annprocess</artifactId>
+                                <version>${dep.jmh.version}</version>
+                            </path>
+                        </annotationProcessorPaths>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${dep.plugin.jar.version}</version>
+                    <configuration>
+                        <archive>
+                            <addMavenDescriptor>true</addMavenDescriptor>
+                            <compress>true</compress>
+                            <index>false</index>
+                            <manifest>
+                                <addClasspath>false</addClasspath>
+                                <addDefaultEntries>true</addDefaultEntries>
+                                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                                <addDefaultSpecificationEntries>false</addDefaultSpecificationEntries>
+                                <addBuildEnvironmentEntries>true</addBuildEnvironmentEntries>
+                            </manifest>
+
+                            <manifestEntries>
+                                <Build-Time>${maven.build.timestamp}</Build-Time>
+                                <Project-Java-Version>${javaVersion}</Project-Java-Version>
+
+                                <Creation-Java-Vendor>${java.vendor}</Creation-Java-Vendor>
+                                <Creation-Java-Version>${java.version}</Creation-Java-Version>
+                                <Creation-Java-Runtime-Name>${java.runtime.name}</Creation-Java-Runtime-Name>
+                                <Creation-Java-Runtime-Version>${java.runtime.version}</Creation-Java-Runtime-Version>
+
+                                <Creation-Os-Name>${os.name}</Creation-Os-Name>
+                                <Creation-Os-Arch>${os.arch}</Creation-Os-Arch>
+                                <Creation-Os-Version>${os.version}</Creation-Os-Version>
+                                <Creation-User>${developer1Id} (${developer1Name}), ${developer2Id} (${developer2Name})</Creation-User>
+                                <Creation-Time>${maven.build.timestamp}</Creation-Time>
+
+                                <Project-Description>${project.description}</Project-Description>
+                                <Project-Url>${project.url}</Project-Url>
+                                <Project-Inception-Year>${project.inceptionYear}</Project-Inception-Year>
+
+                                <Organization-Name>${project.organization.name}</Organization-Name>
+                                <Organization-Url>${project.organization.url}</Organization-Url>
+                            </manifestEntries>
+                        </archive>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>${dep.plugin.checkstyle.version}</version>
+                    <configuration>
+                        <failOnViolation>true</failOnViolation>
+                        <configLocation>${check.checkstyle.ruleset}</configLocation>
+                        <excludes>
+                            **/jmh_generated/**/*.java
+                        </excludes>
+                        <consoleOutput>true</consoleOutput>
+                        <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                        <logViolationsToConsole>true</logViolationsToConsole>
+                        <violationSeverity>warning</violationSeverity>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.puppycrawl.tools</groupId>
+                            <artifactId>checkstyle</artifactId>
+                            <version>${dep.checkstyle.version}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+
+            </plugins>
+
+        </pluginManagement>
+
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>checkstyle-check</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>${dep.plugin.shade.version}</version>
+
+                <configuration>
+                    <shadedArtifactAttached>false</shadedArtifactAttached>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+
+                    <transformers>
+                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                            <mainClass>${jmhMainClass}</mainClass>
+                        </transformer>
+                    </transformers>
+
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <id>jmh-shade-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+
+    </build>
+
+</project>
