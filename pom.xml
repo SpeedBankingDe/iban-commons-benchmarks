@@ -66,19 +66,6 @@
         <url>${project.url}/issues</url>
     </issueManagement>
 
-    <distributionManagement>
-        <snapshotRepository>
-            <id>central</id>
-            <name>Sonatype Central Snapshots</name>
-            <url>${deploy.snapshot.url}</url>
-        </snapshotRepository>
-        <repository>
-            <id>central</id>
-            <name>Sonatype Central Staging Repository</name>
-            <url>https://central.sonatype.com</url>
-        </repository>
-    </distributionManagement>
-
     <properties>
         <!-- require Java 11 for iban4j -->
         <javaVersion>11</javaVersion>
@@ -86,9 +73,10 @@
         <jmhMainClass>org.openjdk.jmh.Main</jmhMainClass>
         <dep.jmh.version>1.37</dep.jmh.version>
 
-        <dep.iban-commons.version>1.8.0</dep.iban-commons.version>
+        <dep.iban-commons.version>1.8.1</dep.iban-commons.version>
         <dep.iban4j.version>3.2.11-RELEASE</dep.iban4j.version>
         <dep.apache-commons-validator.version>1.10.1</dep.apache-commons-validator.version>
+        <dep.garvelink-iban.version>1.16.0</dep.garvelink-iban.version>
 
         <developer1Id>spannm</developer1Id>
         <developer1Name>Markus Spann</developer1Name>
@@ -142,6 +130,12 @@
             <groupId>commons-validator</groupId>
             <artifactId>commons-validator</artifactId>
             <version>${dep.apache-commons-validator.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>nl.garvelink.oss</groupId>
+            <artifactId>iban</artifactId>
+            <version>${dep.garvelink-iban.version}</version>
         </dependency>
 
     </dependencies>

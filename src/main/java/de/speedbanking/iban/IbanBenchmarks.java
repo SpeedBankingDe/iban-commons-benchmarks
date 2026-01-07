@@ -21,7 +21,7 @@ import java.util.stream.IntStream;
  * <p>
  * To execute this test using Maven:
  * <pre>
- *   {@code mvn clean package -P jmh}
+ *   {@code mvn clean package}
  *   {@code java -jar target/iban-commons-benchmarks-1.0.0-SNAPSHOT.jar IbanBenchmarks -prof gc}
  * </pre>
  */
@@ -170,6 +170,27 @@ public class IbanBenchmarks {
     public void bm3a_ApacheCommons_IsValid(final BenchmarkState state, final Blackhole bh) {
         for (String iban : state.getIbans()) {
             bh.consume(APACHE_IBAN_VALIDATOR.isValid(iban));
+        }
+    }
+
+    /**
+     * Measures the throughput of validation and object creation using **garvelink iban**.<br>
+     * Validation errors are consumed as exceptions.
+     *
+     * @param state The benchmark state providing the IBAN data.
+     * @param bh The Blackhole to consume the result or exception and prevent DCE.
+     */
+    @Benchmark
+    public void bm4b_garvelink_ObjectCreation(final BenchmarkState state, final Blackhole bh) {
+        for (String iban : state.getIbans()) {
+            try {
+                // measurement includes validation and object creation
+                // must consume the returned Iban object/Optional to prevent DCE
+                bh.consume(nl.garvelink.iban.IBAN.parse(iban));
+            } catch (Exception ex) {
+                // consume the exception path result
+                bh.consume(ex);
+            }
         }
     }
 
