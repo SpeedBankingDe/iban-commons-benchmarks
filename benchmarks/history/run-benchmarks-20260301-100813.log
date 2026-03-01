@@ -1,0 +1,2467 @@
+=== System Information ===
+Date:     20260301-100813
+OS:       Linux 6.8.0-60-generic
+CPU:      11th Gen Intel(R) Core(TM) i7-1165G7 @ 2.80GHz
+Java:     openjdk version "21.0.7" 2025-04-15 LTS
+JVM Args: -Xms2G -Xmx2G -XX:+UseZGC -XX:+ZGenerational
+--------------------------
+# JMH version: 1.37
+# VM version: JDK 21.0.7, OpenJDK 64-Bit Server VM, 21.0.7+6-LTS
+# VM invoker: /opt/openJDK/jdk-21.0.7+6/bin/java
+# VM options: -Xms2G -Xmx2G -XX:-StackTraceInThrowable
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 5 iterations, 1 s each
+# Measurement: 10 iterations, 2 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: de.speedbanking.iban.IbanBenchmarks.bm1_IbanCommons_Valid
+
+# Run progress: 0.00% complete, ETA 00:10:00
+# Fork: 1 of 3
+# Warmup Iteration   1: INFO: Setup completed for valid IBAN data
+2959330.276 ops/s
+# Warmup Iteration   2: 6208288.202 ops/s
+# Warmup Iteration   3: 7844592.265 ops/s
+# Warmup Iteration   4: 8021274.330 ops/s
+# Warmup Iteration   5: 7914594.442 ops/s
+Iteration   1: 7982430.077 ops/s
+                 gc.alloc.rate:      803.013 MB/sec
+                 gc.alloc.rate.norm: 105.894 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            39.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   2: 8069665.598 ops/s
+                 gc.alloc.rate:      812.074 MB/sec
+                 gc.alloc.rate.norm: 105.894 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            40.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   3: 7418407.602 ops/s
+                 gc.alloc.rate:      748.713 MB/sec
+                 gc.alloc.rate.norm: 105.899 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            46.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   4: 8102411.256 ops/s
+                 gc.alloc.rate:      818.114 MB/sec
+                 gc.alloc.rate.norm: 105.895 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   5: 8215073.699 ops/s
+                 gc.alloc.rate:      827.830 MB/sec
+                 gc.alloc.rate.norm: 105.894 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   6: 7643434.882 ops/s
+                 gc.alloc.rate:      770.713 MB/sec
+                 gc.alloc.rate.norm: 105.898 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   7: 8266838.125 ops/s
+                 gc.alloc.rate:      833.712 MB/sec
+                 gc.alloc.rate.norm: 105.893 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   8: 8109093.996 ops/s
+                 gc.alloc.rate:      817.541 MB/sec
+                 gc.alloc.rate.norm: 105.895 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            ≈ 0 ms
+                 stack:              <delayed till summary>
+
+Iteration   9: 8222150.616 ops/s
+                 gc.alloc.rate:      827.874 MB/sec
+                 gc.alloc.rate.norm: 105.893 B/op
+                 gc.count:           4.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration  10: 7765268.742 ops/s
+                 gc.alloc.rate:      784.081 MB/sec
+                 gc.alloc.rate.norm: 105.897 B/op
+                 gc.count:           2.000 counts
+                 gc.time:            ≈ 0 ms
+                 stack:              <delayed till summary>
+
+
+# Run progress: 4.17% complete, ETA 00:11:01
+# Fork: 2 of 3
+# Warmup Iteration   1: INFO: Setup completed for valid IBAN data
+2454266.635 ops/s
+# Warmup Iteration   2: 5730777.369 ops/s
+# Warmup Iteration   3: 4226790.129 ops/s
+# Warmup Iteration   4: 4965121.057 ops/s
+# Warmup Iteration   5: 7975932.067 ops/s
+Iteration   1: 7936616.726 ops/s
+                 gc.alloc.rate:      799.454 MB/sec
+                 gc.alloc.rate.norm: 105.882 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            43.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   2: 7711700.543 ops/s
+                 gc.alloc.rate:      775.682 MB/sec
+                 gc.alloc.rate.norm: 105.883 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            43.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   3: 8064367.179 ops/s
+                 gc.alloc.rate:      812.996 MB/sec
+                 gc.alloc.rate.norm: 105.881 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            40.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   4: 7483958.330 ops/s
+                 gc.alloc.rate:      754.675 MB/sec
+                 gc.alloc.rate.norm: 105.887 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            40.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   5: 8075852.565 ops/s
+                 gc.alloc.rate:      815.329 MB/sec
+                 gc.alloc.rate.norm: 105.882 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   6: 7775242.624 ops/s
+                 gc.alloc.rate:      784.350 MB/sec
+                 gc.alloc.rate.norm: 105.884 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   7: 8198045.984 ops/s
+                 gc.alloc.rate:      827.619 MB/sec
+                 gc.alloc.rate.norm: 105.881 B/op
+                 gc.count:           4.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   8: 8234264.970 ops/s
+                 gc.alloc.rate:      829.236 MB/sec
+                 gc.alloc.rate.norm: 105.881 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            ≈ 0 ms
+                 stack:              <delayed till summary>
+
+Iteration   9: 8347713.899 ops/s
+                 gc.alloc.rate:      841.807 MB/sec
+                 gc.alloc.rate.norm: 105.880 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration  10: 8463089.163 ops/s
+                 gc.alloc.rate:      853.530 MB/sec
+                 gc.alloc.rate.norm: 105.878 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            ≈ 0 ms
+                 stack:              <delayed till summary>
+
+
+# Run progress: 8.33% complete, ETA 00:10:39
+# Fork: 3 of 3
+# Warmup Iteration   1: INFO: Setup completed for valid IBAN data
+5443099.621 ops/s
+# Warmup Iteration   2: 7662557.393 ops/s
+# Warmup Iteration   3: 7546858.340 ops/s
+# Warmup Iteration   4: 7558780.255 ops/s
+# Warmup Iteration   5: 7921261.418 ops/s
+Iteration   1: 7964039.459 ops/s
+                 gc.alloc.rate:      804.149 MB/sec
+                 gc.alloc.rate.norm: 105.916 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            41.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   2: 7916522.358 ops/s
+                 gc.alloc.rate:      799.032 MB/sec
+                 gc.alloc.rate.norm: 105.915 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            40.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   3: 7832335.063 ops/s
+                 gc.alloc.rate:      790.820 MB/sec
+                 gc.alloc.rate.norm: 105.914 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            47.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   4: 7479118.913 ops/s
+                 gc.alloc.rate:      753.437 MB/sec
+                 gc.alloc.rate.norm: 105.919 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   5: 7690068.662 ops/s
+                 gc.alloc.rate:      776.181 MB/sec
+                 gc.alloc.rate.norm: 105.918 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   6: 8008925.297 ops/s
+                 gc.alloc.rate:      808.096 MB/sec
+                 gc.alloc.rate.norm: 105.915 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   7: 6047409.407 ops/s
+                 gc.alloc.rate:      609.291 MB/sec
+                 gc.alloc.rate.norm: 105.934 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   8: 6250619.512 ops/s
+                 gc.alloc.rate:      630.068 MB/sec
+                 gc.alloc.rate.norm: 105.931 B/op
+                 gc.count:           2.000 counts
+                 gc.time:            ≈ 0 ms
+                 stack:              <delayed till summary>
+
+Iteration   9: 6161530.514 ops/s
+                 gc.alloc.rate:      621.375 MB/sec
+                 gc.alloc.rate.norm: 105.932 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration  10: 6206711.986 ops/s
+                 gc.alloc.rate:      626.911 MB/sec
+                 gc.alloc.rate.norm: 105.932 B/op
+                 gc.count:           2.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+
+
+Result "de.speedbanking.iban.IbanBenchmarks.bm1_IbanCommons_Valid":
+  7721430.258 ±(99.9%) 449088.511 ops/s [Average]
+  (min, avg, max) = (6047409.407, 7721430.258, 8463089.163), stdev = 672174.593
+  CI (99.9%): [7272341.747, 8170518.770] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm1_IbanCommons_Valid:gc.alloc.rate":
+  778.590 ±(99.9%) 45.248 MB/sec [Average]
+  (min, avg, max) = (609.291, 778.590, 853.530), stdev = 67.724
+  CI (99.9%): [733.343, 823.838] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm1_IbanCommons_Valid:gc.alloc.rate.norm":
+  105.900 ±(99.9%) 0.012 B/op [Average]
+  (min, avg, max) = (105.878, 105.900, 105.934), stdev = 0.018
+  CI (99.9%): [105.888, 105.912] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm1_IbanCommons_Valid:gc.count":
+  89.000 ±(99.9%) 0.001 counts [Sum]
+  (min, avg, max) = (2.000, 2.967, 4.000), stdev = 0.414
+  CI (99.9%): [89.000, 89.000] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm1_IbanCommons_Valid:gc.time":
+  434.000 ±(99.9%) 0.001 ms [Sum]
+  (min, avg, max) = (≈ 0, 14.467, 47.000), stdev = 19.793
+  CI (99.9%): [434.000, 434.000] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm1_IbanCommons_Valid:stack":
+Stack profiler:
+
+....[Thread state distributions]....................................................................
+ 66.6%         RUNNABLE
+ 33.3%         TIMED_WAITING
+
+....[Thread state: RUNNABLE]........................................................................
+ 33.3%  50.0% <stack is empty, everything is filtered?>
+ 13.7%  20.5% de.speedbanking.iban.IbanValidator.isValidSpaced
+ 11.3%  16.9% de.speedbanking.iban.Iban.isValid
+  5.4%   8.1% de.speedbanking.iban.IbanBenchmarks.bm1_IbanCommons_Valid
+  2.1%   3.2% java.lang.String.hashCode
+  0.7%   1.0% java.util.HashMap.getNode
+  0.1%   0.2% jdk.internal.misc.Unsafe.unpark
+  0.0%   0.0% java.lang.System.nanoTime
+
+....[Thread state: TIMED_WAITING]...................................................................
+ 33.3% 100.0% jdk.internal.misc.Unsafe.park
+
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.7, OpenJDK 64-Bit Server VM, 21.0.7+6-LTS
+# VM invoker: /opt/openJDK/jdk-21.0.7+6/bin/java
+# VM options: -Xms2G -Xmx2G -XX:-StackTraceInThrowable
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 5 iterations, 1 s each
+# Measurement: 10 iterations, 2 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: de.speedbanking.iban.IbanBenchmarks.bm2_Iban4j_Valid
+
+# Run progress: 12.50% complete, ETA 00:10:05
+# Fork: 1 of 3
+# Warmup Iteration   1: INFO: Setup completed for valid IBAN data
+601070.861 ops/s
+# Warmup Iteration   2: 1749266.069 ops/s
+# Warmup Iteration   3: 1697805.016 ops/s
+# Warmup Iteration   4: 1627483.684 ops/s
+# Warmup Iteration   5: 1051777.716 ops/s
+Iteration   1: 1638542.229 ops/s
+                 gc.alloc.rate:      1770.646 MB/sec
+                 gc.alloc.rate.norm: 1137.177 B/op
+                 gc.count:           8.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   2: 1919083.542 ops/s
+                 gc.alloc.rate:      2079.918 MB/sec
+                 gc.alloc.rate.norm: 1137.124 B/op
+                 gc.count:           8.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   3: 1883343.986 ops/s
+                 gc.alloc.rate:      2039.922 MB/sec
+                 gc.alloc.rate.norm: 1137.129 B/op
+                 gc.count:           8.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   4: 1840163.061 ops/s
+                 gc.alloc.rate:      1994.517 MB/sec
+                 gc.alloc.rate.norm: 1137.138 B/op
+                 gc.count:           8.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   5: 1880857.219 ops/s
+                 gc.alloc.rate:      2037.551 MB/sec
+                 gc.alloc.rate.norm: 1137.135 B/op
+                 gc.count:           8.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   6: 1757195.811 ops/s
+                 gc.alloc.rate:      1905.172 MB/sec
+                 gc.alloc.rate.norm: 1137.154 B/op
+                 gc.count:           8.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   7: 1932581.615 ops/s
+                 gc.alloc.rate:      2092.246 MB/sec
+                 gc.alloc.rate.norm: 1137.128 B/op
+                 gc.count:           8.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   8: 1895348.692 ops/s
+                 gc.alloc.rate:      2052.231 MB/sec
+                 gc.alloc.rate.norm: 1137.133 B/op
+                 gc.count:           8.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   9: 1895510.916 ops/s
+                 gc.alloc.rate:      2054.018 MB/sec
+                 gc.alloc.rate.norm: 1137.129 B/op
+                 gc.count:           8.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration  10: 1915049.291 ops/s
+                 gc.alloc.rate:      2072.745 MB/sec
+                 gc.alloc.rate.norm: 1137.125 B/op
+                 gc.count:           8.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+
+# Run progress: 16.67% complete, ETA 00:09:51
+# Fork: 2 of 3
+# Warmup Iteration   1: INFO: Setup completed for valid IBAN data
+772340.723 ops/s
+# Warmup Iteration   2: 1676395.141 ops/s
+# Warmup Iteration   3: 1180578.760 ops/s
+# Warmup Iteration   4: 1553282.347 ops/s
+# Warmup Iteration   5: 1725964.866 ops/s
+Iteration   1: 1697009.375 ops/s
+                 gc.alloc.rate:      1774.163 MB/sec
+                 gc.alloc.rate.norm: 1096.875 B/op
+                 gc.count:           7.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   2: 1674526.597 ops/s
+                 gc.alloc.rate:      1748.619 MB/sec
+                 gc.alloc.rate.norm: 1096.874 B/op
+                 gc.count:           8.000 counts
+                 gc.time:            3.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   3: 1755305.667 ops/s
+                 gc.alloc.rate:      1834.326 MB/sec
+                 gc.alloc.rate.norm: 1096.865 B/op
+                 gc.count:           8.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   4: 1811575.529 ops/s
+                 gc.alloc.rate:      1894.691 MB/sec
+                 gc.alloc.rate.norm: 1096.857 B/op
+                 gc.count:           7.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   5: 1765839.188 ops/s
+                 gc.alloc.rate:      1843.739 MB/sec
+                 gc.alloc.rate.norm: 1096.863 B/op
+                 gc.count:           8.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   6: 1748552.010 ops/s
+                 gc.alloc.rate:      1827.456 MB/sec
+                 gc.alloc.rate.norm: 1096.868 B/op
+                 gc.count:           8.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   7: 1496053.610 ops/s
+                 gc.alloc.rate:      1560.946 MB/sec
+                 gc.alloc.rate.norm: 1096.915 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   8: 1737748.806 ops/s
+                 gc.alloc.rate:      1809.364 MB/sec
+                 gc.alloc.rate.norm: 1096.870 B/op
+                 gc.count:           8.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   9: 1816863.662 ops/s
+                 gc.alloc.rate:      1898.616 MB/sec
+                 gc.alloc.rate.norm: 1096.859 B/op
+                 gc.count:           8.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration  10: 1835613.298 ops/s
+                 gc.alloc.rate:      1918.140 MB/sec
+                 gc.alloc.rate.norm: 1096.853 B/op
+                 gc.count:           8.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+
+# Run progress: 20.83% complete, ETA 00:09:29
+# Fork: 3 of 3
+# Warmup Iteration   1: INFO: Setup completed for valid IBAN data
+843494.449 ops/s
+# Warmup Iteration   2: 1613441.191 ops/s
+# Warmup Iteration   3: 1768038.756 ops/s
+# Warmup Iteration   4: 1783215.448 ops/s
+# Warmup Iteration   5: 1808244.211 ops/s
+Iteration   1: 1879191.150 ops/s
+                 gc.alloc.rate:      1983.650 MB/sec
+                 gc.alloc.rate.norm: 1107.720 B/op
+                 gc.count:           8.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   2: 1872925.804 ops/s
+                 gc.alloc.rate:      1978.200 MB/sec
+                 gc.alloc.rate.norm: 1107.721 B/op
+                 gc.count:           7.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   3: 1836041.749 ops/s
+                 gc.alloc.rate:      1937.673 MB/sec
+                 gc.alloc.rate.norm: 1107.728 B/op
+                 gc.count:           8.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   4: 1872802.274 ops/s
+                 gc.alloc.rate:      1975.349 MB/sec
+                 gc.alloc.rate.norm: 1107.723 B/op
+                 gc.count:           8.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   5: 1804159.305 ops/s
+                 gc.alloc.rate:      1905.172 MB/sec
+                 gc.alloc.rate.norm: 1107.730 B/op
+                 gc.count:           8.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   6: 1783857.119 ops/s
+                 gc.alloc.rate:      1884.217 MB/sec
+                 gc.alloc.rate.norm: 1107.735 B/op
+                 gc.count:           7.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   7: 1899223.761 ops/s
+                 gc.alloc.rate:      2004.207 MB/sec
+                 gc.alloc.rate.norm: 1107.717 B/op
+                 gc.count:           8.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   8: 1821915.979 ops/s
+                 gc.alloc.rate:      1922.682 MB/sec
+                 gc.alloc.rate.norm: 1107.726 B/op
+                 gc.count:           8.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   9: 1712634.992 ops/s
+                 gc.alloc.rate:      1805.011 MB/sec
+                 gc.alloc.rate.norm: 1107.746 B/op
+                 gc.count:           8.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration  10: 1625068.742 ops/s
+                 gc.alloc.rate:      1711.249 MB/sec
+                 gc.alloc.rate.norm: 1107.765 B/op
+                 gc.count:           7.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+
+
+Result "de.speedbanking.iban.IbanBenchmarks.bm2_Iban4j_Valid":
+  1800152.833 ±(99.9%) 68330.586 ops/s [Average]
+  (min, avg, max) = (1496053.610, 1800152.833, 1932581.615), stdev = 102274.013
+  CI (99.9%): [1731822.246, 1868483.419] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm2_Iban4j_Valid:gc.alloc.rate":
+  1910.548 ±(99.9%) 84.004 MB/sec [Average]
+  (min, avg, max) = (1560.946, 1910.548, 2092.246), stdev = 125.733
+  CI (99.9%): [1826.544, 1994.551] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm2_Iban4j_Valid:gc.alloc.rate.norm":
+  1113.913 ±(99.9%) 11.559 B/op [Average]
+  (min, avg, max) = (1096.853, 1113.913, 1137.177), stdev = 17.301
+  CI (99.9%): [1102.354, 1125.472] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm2_Iban4j_Valid:gc.count":
+  232.000 ±(99.9%) 0.001 counts [Sum]
+  (min, avg, max) = (5.000, 7.733, 8.000), stdev = 0.640
+  CI (99.9%): [232.000, 232.000] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm2_Iban4j_Valid:gc.time":
+  50.000 ±(99.9%) 0.001 ms [Sum]
+  (min, avg, max) = (1.000, 1.667, 3.000), stdev = 0.547
+  CI (99.9%): [50.000, 50.000] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm2_Iban4j_Valid:stack":
+Stack profiler:
+
+....[Thread state distributions]....................................................................
+ 66.6%         RUNNABLE
+ 33.3%         TIMED_WAITING
+
+....[Thread state: RUNNABLE]........................................................................
+ 33.3%  50.0% <stack is empty, everything is filtered?>
+  4.1%   6.2% java.lang.String.hashCode
+  4.1%   6.1% java.util.Formatter$FormatSpecifier.print
+  3.4%   5.1% java.util.Formatter.parse
+  3.3%   5.0% org.iban4j.IbanUtil.validateCheckDigit
+  2.5%   3.8% org.iban4j.IbanUtil.validateCountryCode
+  2.4%   3.6% de.speedbanking.iban.IbanBenchmarks.bm2_Iban4j_Valid
+  1.9%   2.9% java.util.stream.AbstractPipeline.wrapSink
+  1.9%   2.9% java.util.Formatter$FixedString.print
+  1.8%   2.7% org.iban4j.bban.BbanStructure.validateBbanEntry
+  7.8%  11.8% <other>
+
+....[Thread state: TIMED_WAITING]...................................................................
+ 33.3% 100.0% jdk.internal.misc.Unsafe.park
+
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.7, OpenJDK 64-Bit Server VM, 21.0.7+6-LTS
+# VM invoker: /opt/openJDK/jdk-21.0.7+6/bin/java
+# VM options: -Xms2G -Xmx2G -XX:-StackTraceInThrowable
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 5 iterations, 1 s each
+# Measurement: 10 iterations, 2 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: de.speedbanking.iban.IbanBenchmarks.bm3_Apache_Valid
+
+# Run progress: 25.00% complete, ETA 00:08:59
+# Fork: 1 of 3
+# Warmup Iteration   1: INFO: Setup completed for valid IBAN data
+2812735.159 ops/s
+# Warmup Iteration   2: 3783343.347 ops/s
+# Warmup Iteration   3: 4149167.559 ops/s
+# Warmup Iteration   4: 4055821.610 ops/s
+# Warmup Iteration   5: 4039861.312 ops/s
+Iteration   1: 4152454.783 ops/s
+                 gc.alloc.rate:      1262.638 MB/sec
+                 gc.alloc.rate.norm: 318.995 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            47.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   2: 4225285.893 ops/s
+                 gc.alloc.rate:      1285.174 MB/sec
+                 gc.alloc.rate.norm: 318.992 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   3: 4287764.848 ops/s
+                 gc.alloc.rate:      1304.079 MB/sec
+                 gc.alloc.rate.norm: 318.988 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   4: 4254691.028 ops/s
+                 gc.alloc.rate:      1290.712 MB/sec
+                 gc.alloc.rate.norm: 318.989 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   5: 4199931.179 ops/s
+                 gc.alloc.rate:      1276.500 MB/sec
+                 gc.alloc.rate.norm: 318.990 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   6: 4250902.921 ops/s
+                 gc.alloc.rate:      1292.282 MB/sec
+                 gc.alloc.rate.norm: 318.990 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   7: 4322684.232 ops/s
+                 gc.alloc.rate:      1314.492 MB/sec
+                 gc.alloc.rate.norm: 318.988 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   8: 4184622.730 ops/s
+                 gc.alloc.rate:      1272.770 MB/sec
+                 gc.alloc.rate.norm: 318.991 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   9: 4330603.997 ops/s
+                 gc.alloc.rate:      1317.086 MB/sec
+                 gc.alloc.rate.norm: 318.986 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration  10: 4310083.937 ops/s
+                 gc.alloc.rate:      1310.884 MB/sec
+                 gc.alloc.rate.norm: 318.986 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+
+# Run progress: 29.17% complete, ETA 00:08:28
+# Fork: 2 of 3
+# Warmup Iteration   1: INFO: Setup completed for valid IBAN data
+3436912.310 ops/s
+# Warmup Iteration   2: 4307975.831 ops/s
+# Warmup Iteration   3: 4399569.156 ops/s
+# Warmup Iteration   4: 4503409.028 ops/s
+# Warmup Iteration   5: 4578343.052 ops/s
+Iteration   1: 4691241.804 ops/s
+                 gc.alloc.rate:      1423.054 MB/sec
+                 gc.alloc.rate.norm: 318.458 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            35.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   2: 4003654.684 ops/s
+                 gc.alloc.rate:      1215.609 MB/sec
+                 gc.alloc.rate.norm: 318.477 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   3: 3629982.759 ops/s
+                 gc.alloc.rate:      1100.563 MB/sec
+                 gc.alloc.rate.norm: 318.489 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   4: 2855473.638 ops/s
+                 gc.alloc.rate:      866.703 MB/sec
+                 gc.alloc.rate.norm: 318.530 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   5: 4318016.968 ops/s
+                 gc.alloc.rate:      1310.822 MB/sec
+                 gc.alloc.rate.norm: 318.467 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   6: 4249096.721 ops/s
+                 gc.alloc.rate:      1290.037 MB/sec
+                 gc.alloc.rate.norm: 318.471 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   7: 4141580.816 ops/s
+                 gc.alloc.rate:      1255.558 MB/sec
+                 gc.alloc.rate.norm: 318.475 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   8: 4445873.027 ops/s
+                 gc.alloc.rate:      1347.097 MB/sec
+                 gc.alloc.rate.norm: 318.466 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   9: 4066545.555 ops/s
+                 gc.alloc.rate:      1234.048 MB/sec
+                 gc.alloc.rate.norm: 318.479 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration  10: 4135414.687 ops/s
+                 gc.alloc.rate:      1255.680 MB/sec
+                 gc.alloc.rate.norm: 318.475 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+
+# Run progress: 33.33% complete, ETA 00:07:58
+# Fork: 3 of 3
+# Warmup Iteration   1: INFO: Setup completed for valid IBAN data
+2573686.634 ops/s
+# Warmup Iteration   2: 3476929.647 ops/s
+# Warmup Iteration   3: 3733661.023 ops/s
+# Warmup Iteration   4: 3682190.757 ops/s
+# Warmup Iteration   5: 3763833.045 ops/s
+Iteration   1: 3772332.908 ops/s
+                 gc.alloc.rate:      1148.116 MB/sec
+                 gc.alloc.rate.norm: 319.224 B/op
+                 gc.count:           4.000 counts
+                 gc.time:            59.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   2: 3788594.572 ops/s
+                 gc.alloc.rate:      1152.225 MB/sec
+                 gc.alloc.rate.norm: 319.225 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            25.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   3: 3811146.716 ops/s
+                 gc.alloc.rate:      1159.966 MB/sec
+                 gc.alloc.rate.norm: 319.226 B/op
+                 gc.count:           4.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   4: 3731434.194 ops/s
+                 gc.alloc.rate:      1134.055 MB/sec
+                 gc.alloc.rate.norm: 319.229 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   5: 3824112.520 ops/s
+                 gc.alloc.rate:      1163.068 MB/sec
+                 gc.alloc.rate.norm: 319.223 B/op
+                 gc.count:           4.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   6: 4042457.968 ops/s
+                 gc.alloc.rate:      1230.021 MB/sec
+                 gc.alloc.rate.norm: 319.218 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   7: 4255017.695 ops/s
+                 gc.alloc.rate:      1294.621 MB/sec
+                 gc.alloc.rate.norm: 319.213 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            ≈ 0 ms
+                 stack:              <delayed till summary>
+
+Iteration   8: 4070468.374 ops/s
+                 gc.alloc.rate:      1237.185 MB/sec
+                 gc.alloc.rate.norm: 319.215 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   9: 3907654.552 ops/s
+                 gc.alloc.rate:      1189.250 MB/sec
+                 gc.alloc.rate.norm: 319.222 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration  10: 4177647.674 ops/s
+                 gc.alloc.rate:      1270.651 MB/sec
+                 gc.alloc.rate.norm: 319.212 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+
+
+Result "de.speedbanking.iban.IbanBenchmarks.bm3_Apache_Valid":
+  4081225.779 ±(99.9%) 220087.779 ops/s [Average]
+  (min, avg, max) = (2855473.638, 4081225.779, 4691241.804), stdev = 329417.051
+  CI (99.9%): [3861138.001, 4301313.558] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm3_Apache_Valid:gc.alloc.rate":
+  1240.165 ±(99.9%) 66.765 MB/sec [Average]
+  (min, avg, max) = (866.703, 1240.165, 1423.054), stdev = 99.930
+  CI (99.9%): [1173.400, 1306.930] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm3_Apache_Valid:gc.alloc.rate.norm":
+  318.896 ±(99.9%) 0.211 B/op [Average]
+  (min, avg, max) = (318.458, 318.896, 319.229), stdev = 0.316
+  CI (99.9%): [318.685, 319.107] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm3_Apache_Valid:gc.count":
+  145.000 ±(99.9%) 0.001 counts [Sum]
+  (min, avg, max) = (3.000, 4.833, 5.000), stdev = 0.461
+  CI (99.9%): [145.000, 145.000] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm3_Apache_Valid:gc.time":
+  194.000 ±(99.9%) 0.001 ms [Sum]
+  (min, avg, max) = (≈ 0, 6.467, 59.000), stdev = 14.762
+  CI (99.9%): [194.000, 194.000] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm3_Apache_Valid:stack":
+Stack profiler:
+
+....[Thread state distributions]....................................................................
+ 66.6%         RUNNABLE
+ 33.3%         TIMED_WAITING
+
+....[Thread state: RUNNABLE]........................................................................
+ 33.3%  50.0% <stack is empty, everything is filtered?>
+ 18.8%  28.2% java.util.regex.Pattern$BmpCharProperty.match
+  6.0%   8.9% org.apache.commons.validator.routines.checkdigit.IBANCheckDigit.isValid
+  5.0%   7.5% de.speedbanking.iban.IbanBenchmarks.bm3_Apache_Valid
+  1.5%   2.2% java.lang.String.hashCode
+  0.7%   1.1% java.util.regex.Matcher.matches
+  0.6%   0.9% java.util.regex.Pattern$Curly.match
+  0.4%   0.5% java.util.concurrent.ConcurrentHashMap.get
+  0.2%   0.2% org.apache.commons.validator.routines.IBANValidator.validate
+  0.1%   0.2% java.util.regex.Pattern$Curly.match0
+  0.1%   0.2% <other>
+
+....[Thread state: TIMED_WAITING]...................................................................
+ 33.3% 100.0% jdk.internal.misc.Unsafe.park
+
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.7, OpenJDK 64-Bit Server VM, 21.0.7+6-LTS
+# VM invoker: /opt/openJDK/jdk-21.0.7+6/bin/java
+# VM options: -Xms2G -Xmx2G -XX:-StackTraceInThrowable
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 5 iterations, 1 s each
+# Measurement: 10 iterations, 2 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: de.speedbanking.iban.IbanBenchmarks.bm4_Garvelink_Valid
+
+# Run progress: 37.50% complete, ETA 00:07:28
+# Fork: 1 of 3
+# Warmup Iteration   1: INFO: Setup completed for valid IBAN data
+828333.392 ops/s
+# Warmup Iteration   2: 1383542.719 ops/s
+# Warmup Iteration   3: 1527644.526 ops/s
+# Warmup Iteration   4: 1627332.093 ops/s
+# Warmup Iteration   5: 1622613.102 ops/s
+Iteration   1: 1499394.789 ops/s
+                 gc.alloc.rate:      1258.038 MB/sec
+                 gc.alloc.rate.norm: 880.448 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            35.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   2: 1495260.219 ops/s
+                 gc.alloc.rate:      1255.238 MB/sec
+                 gc.alloc.rate.norm: 880.450 B/op
+                 gc.count:           4.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   3: 1666338.346 ops/s
+                 gc.alloc.rate:      1398.872 MB/sec
+                 gc.alloc.rate.norm: 880.418 B/op
+                 gc.count:           7.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   4: 1643729.497 ops/s
+                 gc.alloc.rate:      1379.277 MB/sec
+                 gc.alloc.rate.norm: 880.426 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   5: 1591221.399 ops/s
+                 gc.alloc.rate:      1335.753 MB/sec
+                 gc.alloc.rate.norm: 880.435 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   6: 1626922.101 ops/s
+                 gc.alloc.rate:      1365.060 MB/sec
+                 gc.alloc.rate.norm: 880.430 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   7: 1675408.245 ops/s
+                 gc.alloc.rate:      1405.513 MB/sec
+                 gc.alloc.rate.norm: 880.415 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   8: 1689647.824 ops/s
+                 gc.alloc.rate:      1418.345 MB/sec
+                 gc.alloc.rate.norm: 880.418 B/op
+                 gc.count:           7.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   9: 1695514.586 ops/s
+                 gc.alloc.rate:      1423.072 MB/sec
+                 gc.alloc.rate.norm: 880.414 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration  10: 1695293.405 ops/s
+                 gc.alloc.rate:      1421.939 MB/sec
+                 gc.alloc.rate.norm: 880.413 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+
+# Run progress: 41.67% complete, ETA 00:07:02
+# Fork: 2 of 3
+# Warmup Iteration   1: INFO: Setup completed for valid IBAN data
+838495.268 ops/s
+# Warmup Iteration   2: 1509342.228 ops/s
+# Warmup Iteration   3: 1622779.969 ops/s
+# Warmup Iteration   4: 1614241.372 ops/s
+# Warmup Iteration   5: 1631135.932 ops/s
+Iteration   1: 1662487.553 ops/s
+                 gc.alloc.rate:      1395.646 MB/sec
+                 gc.alloc.rate.norm: 880.571 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            35.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   2: 1487755.606 ops/s
+                 gc.alloc.rate:      1246.462 MB/sec
+                 gc.alloc.rate.norm: 880.609 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   3: 1557567.429 ops/s
+                 gc.alloc.rate:      1307.269 MB/sec
+                 gc.alloc.rate.norm: 880.592 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   4: 1620978.640 ops/s
+                 gc.alloc.rate:      1360.984 MB/sec
+                 gc.alloc.rate.norm: 880.590 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   5: 1671976.765 ops/s
+                 gc.alloc.rate:      1403.665 MB/sec
+                 gc.alloc.rate.norm: 880.582 B/op
+                 gc.count:           7.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   6: 1651279.587 ops/s
+                 gc.alloc.rate:      1386.488 MB/sec
+                 gc.alloc.rate.norm: 880.581 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   7: 1573515.969 ops/s
+                 gc.alloc.rate:      1320.369 MB/sec
+                 gc.alloc.rate.norm: 880.588 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   8: 1693885.190 ops/s
+                 gc.alloc.rate:      1418.937 MB/sec
+                 gc.alloc.rate.norm: 880.568 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   9: 1686047.625 ops/s
+                 gc.alloc.rate:      1413.309 MB/sec
+                 gc.alloc.rate.norm: 880.568 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration  10: 1532433.119 ops/s
+                 gc.alloc.rate:      1285.835 MB/sec
+                 gc.alloc.rate.norm: 880.605 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+
+# Run progress: 45.83% complete, ETA 00:06:35
+# Fork: 3 of 3
+# Warmup Iteration   1: INFO: Setup completed for valid IBAN data
+824958.351 ops/s
+# Warmup Iteration   2: 1497573.698 ops/s
+# Warmup Iteration   3: 1347185.646 ops/s
+# Warmup Iteration   4: 1510999.812 ops/s
+# Warmup Iteration   5: 1504792.655 ops/s
+Iteration   1: 1561916.871 ops/s
+                 gc.alloc.rate:      1316.200 MB/sec
+                 gc.alloc.rate.norm: 883.966 B/op
+                 gc.count:           7.000 counts
+                 gc.time:            38.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   2: 1581075.161 ops/s
+                 gc.alloc.rate:      1331.237 MB/sec
+                 gc.alloc.rate.norm: 883.968 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   3: 1622044.943 ops/s
+                 gc.alloc.rate:      1366.672 MB/sec
+                 gc.alloc.rate.norm: 883.961 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   4: 1606996.035 ops/s
+                 gc.alloc.rate:      1354.333 MB/sec
+                 gc.alloc.rate.norm: 883.960 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   5: 1537497.634 ops/s
+                 gc.alloc.rate:      1295.236 MB/sec
+                 gc.alloc.rate.norm: 883.969 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   6: 1618476.167 ops/s
+                 gc.alloc.rate:      1364.157 MB/sec
+                 gc.alloc.rate.norm: 883.954 B/op
+                 gc.count:           7.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   7: 1630951.081 ops/s
+                 gc.alloc.rate:      1373.570 MB/sec
+                 gc.alloc.rate.norm: 883.957 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   8: 1574306.230 ops/s
+                 gc.alloc.rate:      1324.576 MB/sec
+                 gc.alloc.rate.norm: 883.971 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   9: 1630664.772 ops/s
+                 gc.alloc.rate:      1372.262 MB/sec
+                 gc.alloc.rate.norm: 883.956 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration  10: 1478904.292 ops/s
+                 gc.alloc.rate:      1245.035 MB/sec
+                 gc.alloc.rate.norm: 883.986 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+
+
+Result "de.speedbanking.iban.IbanBenchmarks.bm4_Garvelink_Valid":
+  1608649.703 ±(99.9%) 44688.172 ops/s [Average]
+  (min, avg, max) = (1478904.292, 1608649.703, 1695514.586), stdev = 66887.156
+  CI (99.9%): [1563961.531, 1653337.874] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm4_Garvelink_Valid:gc.alloc.rate":
+  1351.445 ±(99.9%) 37.166 MB/sec [Average]
+  (min, avg, max) = (1245.035, 1351.445, 1423.072), stdev = 55.628
+  CI (99.9%): [1314.279, 1388.611] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm4_Garvelink_Valid:gc.alloc.rate.norm":
+  881.659 ±(99.9%) 1.109 B/op [Average]
+  (min, avg, max) = (880.413, 881.659, 883.986), stdev = 1.660
+  CI (99.9%): [880.550, 882.768] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm4_Garvelink_Valid:gc.count":
+  180.000 ±(99.9%) 0.001 counts [Sum]
+  (min, avg, max) = (4.000, 6.000, 7.000), stdev = 0.643
+  CI (99.9%): [180.000, 180.000] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm4_Garvelink_Valid:gc.time":
+  143.000 ±(99.9%) 0.001 ms [Sum]
+  (min, avg, max) = (1.000, 4.767, 38.000), stdev = 10.608
+  CI (99.9%): [143.000, 143.000] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm4_Garvelink_Valid:stack":
+Stack profiler:
+
+....[Thread state distributions]....................................................................
+ 66.6%         RUNNABLE
+ 33.3%         TIMED_WAITING
+
+....[Thread state: RUNNABLE]........................................................................
+ 33.3%  50.0% <stack is empty, everything is filtered?>
+ 13.2%  19.8% java.math.BigInteger.<init>
+  8.0%  12.0% java.util.regex.Pattern$Start.match
+  4.6%   6.9% java.util.Arrays.binarySearch0
+  2.3%   3.4% java.math.MutableBigInteger.divideKnuth
+  1.5%   2.3% java.util.regex.Matcher.appendReplacement
+  0.9%   1.4% java.util.regex.Pattern$BmpCharProperty.match
+  0.6%   0.9% nl.garvelink.iban.IBAN.toPlain
+  0.5%   0.8% java.util.regex.Matcher.search
+  0.4%   0.6% de.speedbanking.iban.IbanBenchmarks.bm4_Garvelink_Valid
+  1.2%   1.8% <other>
+
+....[Thread state: TIMED_WAITING]...................................................................
+ 33.3% 100.0% jdk.internal.misc.Unsafe.park
+
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.7, OpenJDK 64-Bit Server VM, 21.0.7+6-LTS
+# VM invoker: /opt/openJDK/jdk-21.0.7+6/bin/java
+# VM options: -Xms2G -Xmx2G -XX:-StackTraceInThrowable
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 5 iterations, 1 s each
+# Measurement: 10 iterations, 2 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: de.speedbanking.iban.IbanBenchmarks.bm5_IbanCommons_Invalid
+
+# Run progress: 50.00% complete, ETA 00:06:08
+# Fork: 1 of 3
+# Warmup Iteration   1: INFO: Setup completed for invalid IBAN data
+7451656.066 ops/s
+# Warmup Iteration   2: 11401949.971 ops/s
+# Warmup Iteration   3: 11447603.189 ops/s
+# Warmup Iteration   4: 11437327.062 ops/s
+# Warmup Iteration   5: 11600692.864 ops/s
+Iteration   1: 11239270.603 ops/s
+                 gc.alloc.rate:      839.285 MB/sec
+                 gc.alloc.rate.norm: 78.333 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   2: 11294866.692 ops/s
+                 gc.alloc.rate:      842.673 MB/sec
+                 gc.alloc.rate.norm: 78.332 B/op
+                 gc.count:           4.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   3: 11477358.981 ops/s
+                 gc.alloc.rate:      856.344 MB/sec
+                 gc.alloc.rate.norm: 78.331 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   4: 11410664.147 ops/s
+                 gc.alloc.rate:      852.160 MB/sec
+                 gc.alloc.rate.norm: 78.331 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   5: 11552476.086 ops/s
+                 gc.alloc.rate:      862.339 MB/sec
+                 gc.alloc.rate.norm: 78.331 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   6: 9992074.127 ops/s
+                 gc.alloc.rate:      745.596 MB/sec
+                 gc.alloc.rate.norm: 78.337 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            ≈ 0 ms
+                 stack:              <delayed till summary>
+
+Iteration   7: 11494617.459 ops/s
+                 gc.alloc.rate:      857.566 MB/sec
+                 gc.alloc.rate.norm: 78.331 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   8: 11226097.605 ops/s
+                 gc.alloc.rate:      837.325 MB/sec
+                 gc.alloc.rate.norm: 78.331 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   9: 10284334.044 ops/s
+                 gc.alloc.rate:      768.065 MB/sec
+                 gc.alloc.rate.norm: 78.336 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            ≈ 0 ms
+                 stack:              <delayed till summary>
+
+Iteration  10: 9430515.238 ops/s
+                 gc.alloc.rate:      703.696 MB/sec
+                 gc.alloc.rate.norm: 78.341 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+
+# Run progress: 54.17% complete, ETA 00:05:36
+# Fork: 2 of 3
+# Warmup Iteration   1: INFO: Setup completed for invalid IBAN data
+6815847.636 ops/s
+# Warmup Iteration   2: 7300666.492 ops/s
+# Warmup Iteration   3: 10106159.407 ops/s
+# Warmup Iteration   4: 10925069.417 ops/s
+# Warmup Iteration   5: 11058686.415 ops/s
+Iteration   1: 11089810.778 ops/s
+                 gc.alloc.rate:      827.991 MB/sec
+                 gc.alloc.rate.norm: 78.368 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   2: 10560027.008 ops/s
+                 gc.alloc.rate:      788.118 MB/sec
+                 gc.alloc.rate.norm: 78.370 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   3: 10313217.726 ops/s
+                 gc.alloc.rate:      770.632 MB/sec
+                 gc.alloc.rate.norm: 78.371 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   4: 11079975.950 ops/s
+                 gc.alloc.rate:      827.690 MB/sec
+                 gc.alloc.rate.norm: 78.367 B/op
+                 gc.count:           4.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   5: 11062203.570 ops/s
+                 gc.alloc.rate:      826.163 MB/sec
+                 gc.alloc.rate.norm: 78.368 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   6: 10479192.123 ops/s
+                 gc.alloc.rate:      782.355 MB/sec
+                 gc.alloc.rate.norm: 78.371 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   7: 11321926.560 ops/s
+                 gc.alloc.rate:      845.158 MB/sec
+                 gc.alloc.rate.norm: 78.368 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            ≈ 0 ms
+                 stack:              <delayed till summary>
+
+Iteration   8: 11344361.643 ops/s
+                 gc.alloc.rate:      846.984 MB/sec
+                 gc.alloc.rate.norm: 78.367 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   9: 11189847.794 ops/s
+                 gc.alloc.rate:      835.690 MB/sec
+                 gc.alloc.rate.norm: 78.368 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            ≈ 0 ms
+                 stack:              <delayed till summary>
+
+Iteration  10: 11148983.773 ops/s
+                 gc.alloc.rate:      833.073 MB/sec
+                 gc.alloc.rate.norm: 78.368 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+
+# Run progress: 58.33% complete, ETA 00:05:04
+# Fork: 3 of 3
+# Warmup Iteration   1: INFO: Setup completed for invalid IBAN data
+7376805.019 ops/s
+# Warmup Iteration   2: 11346977.625 ops/s
+# Warmup Iteration   3: 11344519.216 ops/s
+# Warmup Iteration   4: 11352817.913 ops/s
+# Warmup Iteration   5: 11339595.958 ops/s
+Iteration   1: 11374077.013 ops/s
+                 gc.alloc.rate:      849.889 MB/sec
+                 gc.alloc.rate.norm: 78.364 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   2: 10454392.405 ops/s
+                 gc.alloc.rate:      781.217 MB/sec
+                 gc.alloc.rate.norm: 78.368 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   3: 11066376.428 ops/s
+                 gc.alloc.rate:      826.775 MB/sec
+                 gc.alloc.rate.norm: 78.365 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   4: 11340129.748 ops/s
+                 gc.alloc.rate:      847.320 MB/sec
+                 gc.alloc.rate.norm: 78.364 B/op
+                 gc.count:           4.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   5: 11375610.768 ops/s
+                 gc.alloc.rate:      849.554 MB/sec
+                 gc.alloc.rate.norm: 78.365 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   6: 11251656.900 ops/s
+                 gc.alloc.rate:      840.564 MB/sec
+                 gc.alloc.rate.norm: 78.364 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   7: 10960529.314 ops/s
+                 gc.alloc.rate:      818.892 MB/sec
+                 gc.alloc.rate.norm: 78.365 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   8: 11040758.518 ops/s
+                 gc.alloc.rate:      824.307 MB/sec
+                 gc.alloc.rate.norm: 78.365 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            ≈ 0 ms
+                 stack:              <delayed till summary>
+
+Iteration   9: 10708411.367 ops/s
+                 gc.alloc.rate:      800.106 MB/sec
+                 gc.alloc.rate.norm: 78.366 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration  10: 11173209.407 ops/s
+                 gc.alloc.rate:      834.363 MB/sec
+                 gc.alloc.rate.norm: 78.365 B/op
+                 gc.count:           3.000 counts
+                 gc.time:            ≈ 0 ms
+                 stack:              <delayed till summary>
+
+
+
+Result "de.speedbanking.iban.IbanBenchmarks.bm5_IbanCommons_Invalid":
+  10991232.459 ±(99.9%) 333974.222 ops/s [Average]
+  (min, avg, max) = (9430515.238, 10991232.459, 11552476.086), stdev = 499876.931
+  CI (99.9%): [10657258.237, 11325206.681] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm5_IbanCommons_Invalid:gc.alloc.rate":
+  820.730 ±(99.9%) 24.939 MB/sec [Average]
+  (min, avg, max) = (703.696, 820.730, 862.339), stdev = 37.327
+  CI (99.9%): [795.791, 845.669] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm5_IbanCommons_Invalid:gc.alloc.rate.norm":
+  78.356 ±(99.9%) 0.011 B/op [Average]
+  (min, avg, max) = (78.331, 78.356, 78.371), stdev = 0.016
+  CI (99.9%): [78.345, 78.367] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm5_IbanCommons_Invalid:gc.count":
+  93.000 ±(99.9%) 0.001 counts [Sum]
+  (min, avg, max) = (3.000, 3.100, 4.000), stdev = 0.305
+  CI (99.9%): [93.000, 93.000] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm5_IbanCommons_Invalid:gc.time":
+  26.000 ±(99.9%) 0.001 ms [Sum]
+  (min, avg, max) = (≈ 0, 0.867, 2.000), stdev = 0.507
+  CI (99.9%): [26.000, 26.000] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm5_IbanCommons_Invalid:stack":
+Stack profiler:
+
+....[Thread state distributions]....................................................................
+ 66.6%         RUNNABLE
+ 33.3%         TIMED_WAITING
+
+....[Thread state: RUNNABLE]........................................................................
+ 33.3%  50.0% <stack is empty, everything is filtered?>
+ 11.5%  17.2% de.speedbanking.iban.IbanValidator.isValid
+ 11.1%  16.6% de.speedbanking.iban.IbanValidator.isValidSpaced
+  4.2%   6.3% de.speedbanking.iban.Iban.isValid
+  2.8%   4.3% java.lang.String.hashCode
+  2.6%   3.9% de.speedbanking.iban.IbanBenchmarks.bm5_IbanCommons_Invalid
+  1.0%   1.5% java.util.HashMap.getNode
+  0.1%   0.2% jdk.internal.misc.Unsafe.unpark
+  0.0%   0.0% de.speedbanking.iban.IbanRegistry.getByCode
+
+....[Thread state: TIMED_WAITING]...................................................................
+ 33.3% 100.0% jdk.internal.misc.Unsafe.park
+
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.7, OpenJDK 64-Bit Server VM, 21.0.7+6-LTS
+# VM invoker: /opt/openJDK/jdk-21.0.7+6/bin/java
+# VM options: -Xms2G -Xmx2G -XX:-StackTraceInThrowable
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 5 iterations, 1 s each
+# Measurement: 10 iterations, 2 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: de.speedbanking.iban.IbanBenchmarks.bm6_Iban4j_Invalid
+
+# Run progress: 62.50% complete, ETA 00:04:32
+# Fork: 1 of 3
+# Warmup Iteration   1: INFO: Setup completed for invalid IBAN data
+581647.542 ops/s
+# Warmup Iteration   2: 1641092.008 ops/s
+# Warmup Iteration   3: 1507812.428 ops/s
+# Warmup Iteration   4: 1476782.191 ops/s
+# Warmup Iteration   5: 1645814.729 ops/s
+Iteration   1: 1624454.498 ops/s
+                 gc.alloc.rate:      1568.677 MB/sec
+                 gc.alloc.rate.norm: 1013.472 B/op
+                 gc.count:           7.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   2: 1558927.254 ops/s
+                 gc.alloc.rate:      1506.439 MB/sec
+                 gc.alloc.rate.norm: 1013.487 B/op
+                 gc.count:           7.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   3: 1579713.050 ops/s
+                 gc.alloc.rate:      1522.728 MB/sec
+                 gc.alloc.rate.norm: 1013.485 B/op
+                 gc.count:           7.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   4: 1664863.163 ops/s
+                 gc.alloc.rate:      1607.894 MB/sec
+                 gc.alloc.rate.norm: 1013.468 B/op
+                 gc.count:           7.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   5: 1664204.139 ops/s
+                 gc.alloc.rate:      1607.456 MB/sec
+                 gc.alloc.rate.norm: 1013.465 B/op
+                 gc.count:           7.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   6: 1690858.341 ops/s
+                 gc.alloc.rate:      1633.426 MB/sec
+                 gc.alloc.rate.norm: 1013.459 B/op
+                 gc.count:           7.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   7: 1283838.554 ops/s
+                 gc.alloc.rate:      1240.019 MB/sec
+                 gc.alloc.rate.norm: 1013.554 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   8: 1659796.974 ops/s
+                 gc.alloc.rate:      1602.624 MB/sec
+                 gc.alloc.rate.norm: 1013.464 B/op
+                 gc.count:           8.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   9: 1359543.316 ops/s
+                 gc.alloc.rate:      1313.771 MB/sec
+                 gc.alloc.rate.norm: 1013.533 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration  10: 1588024.692 ops/s
+                 gc.alloc.rate:      1534.599 MB/sec
+                 gc.alloc.rate.norm: 1013.479 B/op
+                 gc.count:           7.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+
+# Run progress: 66.67% complete, ETA 00:04:03
+# Fork: 2 of 3
+# Warmup Iteration   1: INFO: Setup completed for invalid IBAN data
+673273.325 ops/s
+# Warmup Iteration   2: 1793748.691 ops/s
+# Warmup Iteration   3: 1762386.914 ops/s
+# Warmup Iteration   4: 1792503.808 ops/s
+# Warmup Iteration   5: 1710011.410 ops/s
+Iteration   1: 1756339.002 ops/s
+                 gc.alloc.rate:      1658.297 MB/sec
+                 gc.alloc.rate.norm: 991.316 B/op
+                 gc.count:           7.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   2: 1679586.062 ops/s
+                 gc.alloc.rate:      1584.552 MB/sec
+                 gc.alloc.rate.norm: 991.327 B/op
+                 gc.count:           7.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   3: 1738666.541 ops/s
+                 gc.alloc.rate:      1640.070 MB/sec
+                 gc.alloc.rate.norm: 991.312 B/op
+                 gc.count:           7.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   4: 1131228.721 ops/s
+                 gc.alloc.rate:      1068.169 MB/sec
+                 gc.alloc.rate.norm: 991.474 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   5: 1436935.459 ops/s
+                 gc.alloc.rate:      1357.670 MB/sec
+                 gc.alloc.rate.norm: 991.375 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   6: 1770317.042 ops/s
+                 gc.alloc.rate:      1672.798 MB/sec
+                 gc.alloc.rate.norm: 991.307 B/op
+                 gc.count:           7.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   7: 1805907.713 ops/s
+                 gc.alloc.rate:      1705.702 MB/sec
+                 gc.alloc.rate.norm: 991.302 B/op
+                 gc.count:           7.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   8: 1527328.989 ops/s
+                 gc.alloc.rate:      1442.013 MB/sec
+                 gc.alloc.rate.norm: 991.354 B/op
+                 gc.count:           7.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   9: 1469696.151 ops/s
+                 gc.alloc.rate:      1388.376 MB/sec
+                 gc.alloc.rate.norm: 991.367 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration  10: 1664592.188 ops/s
+                 gc.alloc.rate:      1572.516 MB/sec
+                 gc.alloc.rate.norm: 991.328 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+
+# Run progress: 70.83% complete, ETA 00:03:34
+# Fork: 3 of 3
+# Warmup Iteration   1: INFO: Setup completed for invalid IBAN data
+393582.947 ops/s
+# Warmup Iteration   2: 1485054.322 ops/s
+# Warmup Iteration   3: 1545732.385 ops/s
+# Warmup Iteration   4: 1287359.050 ops/s
+# Warmup Iteration   5: 1563822.572 ops/s
+Iteration   1: 1079267.675 ops/s
+                 gc.alloc.rate:      1020.553 MB/sec
+                 gc.alloc.rate.norm: 991.700 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   2: 852597.678 ops/s
+                 gc.alloc.rate:      806.178 MB/sec
+                 gc.alloc.rate.norm: 991.834 B/op
+                 gc.count:           4.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   3: 1213110.069 ops/s
+                 gc.alloc.rate:      1146.924 MB/sec
+                 gc.alloc.rate.norm: 991.644 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   4: 1490298.954 ops/s
+                 gc.alloc.rate:      1405.236 MB/sec
+                 gc.alloc.rate.norm: 991.571 B/op
+                 gc.count:           7.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   5: 1545444.529 ops/s
+                 gc.alloc.rate:      1460.321 MB/sec
+                 gc.alloc.rate.norm: 991.556 B/op
+                 gc.count:           7.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   6: 1384547.088 ops/s
+                 gc.alloc.rate:      1308.502 MB/sec
+                 gc.alloc.rate.norm: 991.602 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   7: 1490929.397 ops/s
+                 gc.alloc.rate:      1409.400 MB/sec
+                 gc.alloc.rate.norm: 991.573 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   8: 1435474.175 ops/s
+                 gc.alloc.rate:      1357.000 MB/sec
+                 gc.alloc.rate.norm: 991.588 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   9: 1432672.982 ops/s
+                 gc.alloc.rate:      1353.822 MB/sec
+                 gc.alloc.rate.norm: 991.588 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration  10: 1487389.534 ops/s
+                 gc.alloc.rate:      1404.473 MB/sec
+                 gc.alloc.rate.norm: 991.571 B/op
+                 gc.count:           7.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+
+
+Result "de.speedbanking.iban.IbanBenchmarks.bm6_Iban4j_Invalid":
+  1502218.464 ±(99.9%) 147249.082 ops/s [Average]
+  (min, avg, max) = (852597.678, 1502218.464, 1805907.713), stdev = 220395.511
+  CI (99.9%): [1354969.382, 1649467.547] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm6_Iban4j_Invalid:gc.alloc.rate":
+  1430.007 ±(99.9%) 141.859 MB/sec [Average]
+  (min, avg, max) = (806.178, 1430.007, 1705.702), stdev = 212.328
+  CI (99.9%): [1288.148, 1571.866] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm6_Iban4j_Invalid:gc.alloc.rate.norm":
+  998.819 ±(99.9%) 7.049 B/op [Average]
+  (min, avg, max) = (991.302, 998.819, 1013.554), stdev = 10.550
+  CI (99.9%): [991.770, 1005.867] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm6_Iban4j_Invalid:gc.count":
+  187.000 ±(99.9%) 0.001 counts [Sum]
+  (min, avg, max) = (4.000, 6.233, 8.000), stdev = 1.040
+  CI (99.9%): [187.000, 187.000] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm6_Iban4j_Invalid:gc.time":
+  45.000 ±(99.9%) 0.001 ms [Sum]
+  (min, avg, max) = (1.000, 1.500, 2.000), stdev = 0.509
+  CI (99.9%): [45.000, 45.000] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm6_Iban4j_Invalid:stack":
+Stack profiler:
+
+....[Thread state distributions]....................................................................
+ 66.6%         RUNNABLE
+ 33.3%         TIMED_WAITING
+
+....[Thread state: RUNNABLE]........................................................................
+ 33.3%  50.0% <stack is empty, everything is filtered?>
+  5.1%   7.6% java.lang.String.hashCode
+  4.2%   6.4% de.speedbanking.iban.IbanBenchmarks.bm6_Iban4j_Invalid
+  4.0%   6.0% java.util.Formatter.parse
+  3.6%   5.5% java.util.Formatter$FixedString.print
+  3.2%   4.7% java.util.Formatter$FormatSpecifier.print
+  2.7%   4.0% java.lang.Throwable.fillInStackTrace
+  1.3%   1.9% org.iban4j.IbanUtil.validateCountryCode
+  1.2%   1.8% org.iban4j.IbanUtil.validate
+  1.2%   1.7% java.util.Formatter.format
+  6.8%  10.3% <other>
+
+....[Thread state: TIMED_WAITING]...................................................................
+ 33.3% 100.0% jdk.internal.misc.Unsafe.park
+
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.7, OpenJDK 64-Bit Server VM, 21.0.7+6-LTS
+# VM invoker: /opt/openJDK/jdk-21.0.7+6/bin/java
+# VM options: -Xms2G -Xmx2G -XX:-StackTraceInThrowable
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 5 iterations, 1 s each
+# Measurement: 10 iterations, 2 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: de.speedbanking.iban.IbanBenchmarks.bm7_Apache_Invalid
+
+# Run progress: 75.00% complete, ETA 00:03:04
+# Fork: 1 of 3
+# Warmup Iteration   1: INFO: Setup completed for invalid IBAN data
+6361624.286 ops/s
+# Warmup Iteration   2: 8798789.983 ops/s
+# Warmup Iteration   3: 9001770.993 ops/s
+# Warmup Iteration   4: 9058444.925 ops/s
+# Warmup Iteration   5: 9117277.517 ops/s
+Iteration   1: 8718707.786 ops/s
+                 gc.alloc.rate:      1373.639 MB/sec
+                 gc.alloc.rate.norm: 165.387 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   2: 8932972.770 ops/s
+                 gc.alloc.rate:      1408.387 MB/sec
+                 gc.alloc.rate.norm: 165.386 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   3: 8246746.677 ops/s
+                 gc.alloc.rate:      1299.796 MB/sec
+                 gc.alloc.rate.norm: 165.390 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   4: 9268289.428 ops/s
+                 gc.alloc.rate:      1461.051 MB/sec
+                 gc.alloc.rate.norm: 165.383 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   5: 8793127.127 ops/s
+                 gc.alloc.rate:      1384.475 MB/sec
+                 gc.alloc.rate.norm: 165.386 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   6: 9025186.350 ops/s
+                 gc.alloc.rate:      1423.052 MB/sec
+                 gc.alloc.rate.norm: 165.385 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   7: 8792741.339 ops/s
+                 gc.alloc.rate:      1386.343 MB/sec
+                 gc.alloc.rate.norm: 165.388 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   8: 9050272.924 ops/s
+                 gc.alloc.rate:      1424.837 MB/sec
+                 gc.alloc.rate.norm: 165.385 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   9: 8811090.290 ops/s
+                 gc.alloc.rate:      1389.324 MB/sec
+                 gc.alloc.rate.norm: 165.387 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration  10: 8977112.766 ops/s
+                 gc.alloc.rate:      1415.382 MB/sec
+                 gc.alloc.rate.norm: 165.385 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+
+# Run progress: 79.17% complete, ETA 00:02:33
+# Fork: 2 of 3
+# Warmup Iteration   1: INFO: Setup completed for invalid IBAN data
+6762411.138 ops/s
+# Warmup Iteration   2: 9845917.651 ops/s
+# Warmup Iteration   3: 9237187.334 ops/s
+# Warmup Iteration   4: 9845597.025 ops/s
+# Warmup Iteration   5: 8714061.888 ops/s
+Iteration   1: 8924545.914 ops/s
+                 gc.alloc.rate:      1402.906 MB/sec
+                 gc.alloc.rate.norm: 164.898 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            31.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   2: 9681096.585 ops/s
+                 gc.alloc.rate:      1521.998 MB/sec
+                 gc.alloc.rate.norm: 164.893 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   3: 9960029.723 ops/s
+                 gc.alloc.rate:      1562.119 MB/sec
+                 gc.alloc.rate.norm: 164.892 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   4: 10023424.246 ops/s
+                 gc.alloc.rate:      1574.455 MB/sec
+                 gc.alloc.rate.norm: 164.891 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   5: 10165606.742 ops/s
+                 gc.alloc.rate:      1597.519 MB/sec
+                 gc.alloc.rate.norm: 164.891 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   6: 8637386.596 ops/s
+                 gc.alloc.rate:      1358.108 MB/sec
+                 gc.alloc.rate.norm: 164.899 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   7: 9350797.110 ops/s
+                 gc.alloc.rate:      1469.204 MB/sec
+                 gc.alloc.rate.norm: 164.897 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   8: 9883736.032 ops/s
+                 gc.alloc.rate:      1553.165 MB/sec
+                 gc.alloc.rate.norm: 164.892 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   9: 9384098.464 ops/s
+                 gc.alloc.rate:      1474.621 MB/sec
+                 gc.alloc.rate.norm: 164.895 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration  10: 9710850.469 ops/s
+                 gc.alloc.rate:      1526.703 MB/sec
+                 gc.alloc.rate.norm: 164.893 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+
+# Run progress: 83.33% complete, ETA 00:02:02
+# Fork: 3 of 3
+# Warmup Iteration   1: INFO: Setup completed for invalid IBAN data
+6350019.659 ops/s
+# Warmup Iteration   2: 9290199.917 ops/s
+# Warmup Iteration   3: 8914955.073 ops/s
+# Warmup Iteration   4: 8467169.459 ops/s
+# Warmup Iteration   5: 8557796.466 ops/s
+Iteration   1: 8745099.884 ops/s
+                 gc.alloc.rate:      1375.251 MB/sec
+                 gc.alloc.rate.norm: 164.938 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            3.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   2: 9304751.400 ops/s
+                 gc.alloc.rate:      1461.401 MB/sec
+                 gc.alloc.rate.norm: 164.934 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   3: 9146722.624 ops/s
+                 gc.alloc.rate:      1438.255 MB/sec
+                 gc.alloc.rate.norm: 164.935 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   4: 9142992.198 ops/s
+                 gc.alloc.rate:      1437.069 MB/sec
+                 gc.alloc.rate.norm: 164.935 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   5: 9283805.977 ops/s
+                 gc.alloc.rate:      1459.534 MB/sec
+                 gc.alloc.rate.norm: 164.934 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   6: 9231990.914 ops/s
+                 gc.alloc.rate:      1449.694 MB/sec
+                 gc.alloc.rate.norm: 164.933 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   7: 9019184.809 ops/s
+                 gc.alloc.rate:      1417.716 MB/sec
+                 gc.alloc.rate.norm: 164.935 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   8: 8363040.481 ops/s
+                 gc.alloc.rate:      1314.513 MB/sec
+                 gc.alloc.rate.norm: 164.939 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   9: 9115429.798 ops/s
+                 gc.alloc.rate:      1433.349 MB/sec
+                 gc.alloc.rate.norm: 164.934 B/op
+                 gc.count:           6.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration  10: 9292628.499 ops/s
+                 gc.alloc.rate:      1461.284 MB/sec
+                 gc.alloc.rate.norm: 164.934 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+
+
+Result "de.speedbanking.iban.IbanBenchmarks.bm7_Apache_Invalid":
+  9166115.531 ±(99.9%) 312516.057 ops/s [Average]
+  (min, avg, max) = (8246746.677, 9166115.531, 10165606.742), stdev = 467759.358
+  CI (99.9%): [8853599.474, 9478631.588] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm7_Apache_Invalid:gc.alloc.rate":
+  1441.838 ±(99.9%) 48.357 MB/sec [Average]
+  (min, avg, max) = (1299.796, 1441.838, 1597.519), stdev = 72.378
+  CI (99.9%): [1393.482, 1490.195] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm7_Apache_Invalid:gc.alloc.rate.norm":
+  165.072 ±(99.9%) 0.151 B/op [Average]
+  (min, avg, max) = (164.891, 165.072, 165.390), stdev = 0.227
+  CI (99.9%): [164.920, 165.223] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm7_Apache_Invalid:gc.count":
+  164.000 ±(99.9%) 0.001 counts [Sum]
+  (min, avg, max) = (5.000, 5.467, 6.000), stdev = 0.507
+  CI (99.9%): [164.000, 164.000] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm7_Apache_Invalid:gc.time":
+  68.000 ±(99.9%) 0.001 ms [Sum]
+  (min, avg, max) = (1.000, 2.267, 31.000), stdev = 5.452
+  CI (99.9%): [68.000, 68.000] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm7_Apache_Invalid:stack":
+Stack profiler:
+
+....[Thread state distributions]....................................................................
+ 66.6%         RUNNABLE
+ 33.3%         TIMED_WAITING
+
+....[Thread state: RUNNABLE]........................................................................
+ 33.3%  50.1% <stack is empty, everything is filtered?>
+ 15.8%  23.7% java.util.regex.Pattern$BmpCharProperty.match
+  6.4%   9.6% org.apache.commons.validator.routines.checkdigit.IBANCheckDigit.isValid
+  5.2%   7.9% java.lang.String.hashCode
+  2.3%   3.5% de.speedbanking.iban.IbanBenchmarks.bm7_Apache_Invalid
+  0.9%   1.3% java.util.regex.Matcher.matches
+  0.8%   1.3% java.util.concurrent.ConcurrentHashMap.get
+  0.8%   1.2% java.util.regex.Pattern$Curly.match
+  0.6%   0.9% org.apache.commons.validator.routines.IBANValidator.validate
+  0.1%   0.2% java.util.regex.Pattern$Curly.match0
+  0.2%   0.2% <other>
+
+....[Thread state: TIMED_WAITING]...................................................................
+ 33.3% 100.0% jdk.internal.misc.Unsafe.park
+
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.7, OpenJDK 64-Bit Server VM, 21.0.7+6-LTS
+# VM invoker: /opt/openJDK/jdk-21.0.7+6/bin/java
+# VM options: -Xms2G -Xmx2G -XX:-StackTraceInThrowable
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 5 iterations, 1 s each
+# Measurement: 10 iterations, 2 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: de.speedbanking.iban.IbanBenchmarks.bm8_Garvelink_Invalid
+
+# Run progress: 87.50% complete, ETA 00:01:31
+# Fork: 1 of 3
+# Warmup Iteration   1: INFO: Setup completed for invalid IBAN data
+922292.201 ops/s
+# Warmup Iteration   2: 1679083.452 ops/s
+# Warmup Iteration   3: 1498787.343 ops/s
+# Warmup Iteration   4: 1569421.182 ops/s
+# Warmup Iteration   5: 1491629.252 ops/s
+Iteration   1: 1662587.987 ops/s
+                 gc.alloc.rate:      1092.831 MB/sec
+                 gc.alloc.rate.norm: 689.569 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            7.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   2: 1658899.052 ops/s
+                 gc.alloc.rate:      1090.680 MB/sec
+                 gc.alloc.rate.norm: 689.566 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            4.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   3: 1695374.910 ops/s
+                 gc.alloc.rate:      1114.713 MB/sec
+                 gc.alloc.rate.norm: 689.559 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   4: 1668155.744 ops/s
+                 gc.alloc.rate:      1096.205 MB/sec
+                 gc.alloc.rate.norm: 689.565 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   5: 1621406.683 ops/s
+                 gc.alloc.rate:      1066.084 MB/sec
+                 gc.alloc.rate.norm: 689.573 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   6: 1608008.425 ops/s
+                 gc.alloc.rate:      1056.494 MB/sec
+                 gc.alloc.rate.norm: 689.574 B/op
+                 gc.count:           4.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   7: 1711312.696 ops/s
+                 gc.alloc.rate:      1124.770 MB/sec
+                 gc.alloc.rate.norm: 689.554 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   8: 1641261.261 ops/s
+                 gc.alloc.rate:      1079.104 MB/sec
+                 gc.alloc.rate.norm: 689.568 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   9: 1674107.264 ops/s
+                 gc.alloc.rate:      1098.428 MB/sec
+                 gc.alloc.rate.norm: 689.565 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration  10: 1636918.832 ops/s
+                 gc.alloc.rate:      1074.866 MB/sec
+                 gc.alloc.rate.norm: 689.570 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+
+# Run progress: 91.67% complete, ETA 00:01:01
+# Fork: 2 of 3
+# Warmup Iteration   1: INFO: Setup completed for invalid IBAN data
+920426.243 ops/s
+# Warmup Iteration   2: 1588152.250 ops/s
+# Warmup Iteration   3: 1679096.648 ops/s
+# Warmup Iteration   4: 1705034.722 ops/s
+# Warmup Iteration   5: 1790336.844 ops/s
+Iteration   1: 1775819.406 ops/s
+                 gc.alloc.rate:      1165.856 MB/sec
+                 gc.alloc.rate.norm: 689.232 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   2: 1677153.212 ops/s
+                 gc.alloc.rate:      1101.339 MB/sec
+                 gc.alloc.rate.norm: 689.248 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   3: 1724258.400 ops/s
+                 gc.alloc.rate:      1133.145 MB/sec
+                 gc.alloc.rate.norm: 689.242 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   4: 1779094.612 ops/s
+                 gc.alloc.rate:      1169.162 MB/sec
+                 gc.alloc.rate.norm: 689.229 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   5: 1761913.179 ops/s
+                 gc.alloc.rate:      1156.022 MB/sec
+                 gc.alloc.rate.norm: 689.233 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   6: 1597119.788 ops/s
+                 gc.alloc.rate:      1049.419 MB/sec
+                 gc.alloc.rate.norm: 689.271 B/op
+                 gc.count:           4.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   7: 1757912.561 ops/s
+                 gc.alloc.rate:      1154.950 MB/sec
+                 gc.alloc.rate.norm: 689.237 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   8: 1610361.333 ops/s
+                 gc.alloc.rate:      1056.687 MB/sec
+                 gc.alloc.rate.norm: 689.265 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   9: 1762375.599 ops/s
+                 gc.alloc.rate:      1157.478 MB/sec
+                 gc.alloc.rate.norm: 689.238 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration  10: 1729285.284 ops/s
+                 gc.alloc.rate:      1136.504 MB/sec
+                 gc.alloc.rate.norm: 689.241 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+
+# Run progress: 95.83% complete, ETA 00:00:30
+# Fork: 3 of 3
+# Warmup Iteration   1: INFO: Setup completed for invalid IBAN data
+971403.715 ops/s
+# Warmup Iteration   2: 1787419.818 ops/s
+# Warmup Iteration   3: 1807167.192 ops/s
+# Warmup Iteration   4: 1837871.917 ops/s
+# Warmup Iteration   5: 1783997.535 ops/s
+Iteration   1: 1828860.865 ops/s
+                 gc.alloc.rate:      1201.749 MB/sec
+                 gc.alloc.rate.norm: 689.176 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   2: 1710186.156 ops/s
+                 gc.alloc.rate:      1123.636 MB/sec
+                 gc.alloc.rate.norm: 689.195 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   3: 1583728.381 ops/s
+                 gc.alloc.rate:      1040.824 MB/sec
+                 gc.alloc.rate.norm: 689.214 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   4: 1841977.780 ops/s
+                 gc.alloc.rate:      1210.124 MB/sec
+                 gc.alloc.rate.norm: 689.173 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            2.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   5: 1791890.230 ops/s
+                 gc.alloc.rate:      1177.205 MB/sec
+                 gc.alloc.rate.norm: 689.180 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   6: 1839658.096 ops/s
+                 gc.alloc.rate:      1208.486 MB/sec
+                 gc.alloc.rate.norm: 689.174 B/op
+                 gc.count:           4.000 counts
+                 gc.time:            ≈ 0 ms
+                 stack:              <delayed till summary>
+
+Iteration   7: 1788488.186 ops/s
+                 gc.alloc.rate:      1175.220 MB/sec
+                 gc.alloc.rate.norm: 689.178 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   8: 1815923.327 ops/s
+                 gc.alloc.rate:      1193.016 MB/sec
+                 gc.alloc.rate.norm: 689.183 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration   9: 1850156.873 ops/s
+                 gc.alloc.rate:      1215.463 MB/sec
+                 gc.alloc.rate.norm: 689.177 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+Iteration  10: 1834106.487 ops/s
+                 gc.alloc.rate:      1204.027 MB/sec
+                 gc.alloc.rate.norm: 689.170 B/op
+                 gc.count:           5.000 counts
+                 gc.time:            1.000 ms
+                 stack:              <delayed till summary>
+
+
+
+Result "de.speedbanking.iban.IbanBenchmarks.bm8_Garvelink_Invalid":
+  1721276.754 ±(99.9%) 55096.007 ops/s [Average]
+  (min, avg, max) = (1583728.381, 1721276.754, 1850156.873), stdev = 82465.116
+  CI (99.9%): [1666180.746, 1776372.761] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm8_Garvelink_Invalid:gc.alloc.rate":
+  1130.816 ±(99.9%) 36.126 MB/sec [Average]
+  (min, avg, max) = (1040.824, 1130.816, 1215.463), stdev = 54.072
+  CI (99.9%): [1094.690, 1166.943] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm8_Garvelink_Invalid:gc.alloc.rate.norm":
+  689.331 ±(99.9%) 0.115 B/op [Average]
+  (min, avg, max) = (689.170, 689.331, 689.574), stdev = 0.172
+  CI (99.9%): [689.216, 689.446] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm8_Garvelink_Invalid:gc.count":
+  147.000 ±(99.9%) 0.001 counts [Sum]
+  (min, avg, max) = (4.000, 4.900, 5.000), stdev = 0.305
+  CI (99.9%): [147.000, 147.000] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm8_Garvelink_Invalid:gc.time":
+  44.000 ±(99.9%) 0.001 ms [Sum]
+  (min, avg, max) = (≈ 0, 1.467, 7.000), stdev = 1.252
+  CI (99.9%): [44.000, 44.000] (assumes normal distribution)
+
+Secondary result "de.speedbanking.iban.IbanBenchmarks.bm8_Garvelink_Invalid:stack":
+Stack profiler:
+
+....[Thread state distributions]....................................................................
+ 66.6%         RUNNABLE
+ 33.3%         TIMED_WAITING
+
+....[Thread state: RUNNABLE]........................................................................
+ 33.3%  50.0% <stack is empty, everything is filtered?>
+ 11.6%  17.4% java.util.regex.Pattern$Start.match
+  6.5%   9.7% java.math.BigInteger.<init>
+  3.5%   5.3% java.util.Arrays.binarySearch0
+  2.9%   4.3% de.speedbanking.iban.IbanBenchmarks.bm8_Garvelink_Invalid
+  2.6%   3.9% java.lang.Throwable.fillInStackTrace
+  1.8%   2.7% java.util.regex.Matcher.appendReplacement
+  1.2%   1.8% java.util.regex.Pattern$BmpCharProperty.match
+  1.1%   1.6% java.math.MutableBigInteger.divideKnuth
+  0.8%   1.2% nl.garvelink.iban.IBAN.toPlain
+  1.3%   2.0% <other>
+
+....[Thread state: TIMED_WAITING]...................................................................
+ 33.3% 100.0% jdk.internal.misc.Unsafe.park
+
+
+
+# Run complete. Total time: 00:12:16
+
+REMEMBER: The numbers below are just data. To gain reusable insights, you need to follow up on
+why the numbers are the way they are. Use profilers (see -prof, -lprof), design factorial
+experiments, perform baseline and negative tests that provide experimental control, make sure
+the benchmarking environment is safe on JVM/OS/HW level, ask for reviews from the domain experts.
+Do not assume the numbers tell you what you want them to tell.
+
+NOTE: Current JVM experimentally supports Compiler Blackholes, and they are in use. Please exercise
+extra caution when trusting the results, look into the generated code to check the benchmark still
+works, and factor in a small probability of new VM bugs. Additionally, while comparisons between
+different JVMs are already problematic, the performance difference caused by different Blackhole
+modes can be very significant. Please make sure you use the consistent Blackhole mode for comparisons.
+
+Benchmark                                                   Mode  Cnt         Score        Error   Units
+IbanBenchmarks.bm1_IbanCommons_Valid                       thrpt   30   7721430.258 ± 449088.511   ops/s
+IbanBenchmarks.bm1_IbanCommons_Valid:gc.alloc.rate         thrpt   30       778.590 ±     45.248  MB/sec
+IbanBenchmarks.bm1_IbanCommons_Valid:gc.alloc.rate.norm    thrpt   30       105.900 ±      0.012    B/op
+IbanBenchmarks.bm1_IbanCommons_Valid:gc.count              thrpt   30        89.000               counts
+IbanBenchmarks.bm1_IbanCommons_Valid:gc.time               thrpt   30       434.000                   ms
+IbanBenchmarks.bm1_IbanCommons_Valid:stack                 thrpt                NaN                  ---
+IbanBenchmarks.bm2_Iban4j_Valid                            thrpt   30   1800152.833 ±  68330.586   ops/s
+IbanBenchmarks.bm2_Iban4j_Valid:gc.alloc.rate              thrpt   30      1910.548 ±     84.004  MB/sec
+IbanBenchmarks.bm2_Iban4j_Valid:gc.alloc.rate.norm         thrpt   30      1113.913 ±     11.559    B/op
+IbanBenchmarks.bm2_Iban4j_Valid:gc.count                   thrpt   30       232.000               counts
+IbanBenchmarks.bm2_Iban4j_Valid:gc.time                    thrpt   30        50.000                   ms
+IbanBenchmarks.bm2_Iban4j_Valid:stack                      thrpt                NaN                  ---
+IbanBenchmarks.bm3_Apache_Valid                            thrpt   30   4081225.779 ± 220087.779   ops/s
+IbanBenchmarks.bm3_Apache_Valid:gc.alloc.rate              thrpt   30      1240.165 ±     66.765  MB/sec
+IbanBenchmarks.bm3_Apache_Valid:gc.alloc.rate.norm         thrpt   30       318.896 ±      0.211    B/op
+IbanBenchmarks.bm3_Apache_Valid:gc.count                   thrpt   30       145.000               counts
+IbanBenchmarks.bm3_Apache_Valid:gc.time                    thrpt   30       194.000                   ms
+IbanBenchmarks.bm3_Apache_Valid:stack                      thrpt                NaN                  ---
+IbanBenchmarks.bm4_Garvelink_Valid                         thrpt   30   1608649.703 ±  44688.172   ops/s
+IbanBenchmarks.bm4_Garvelink_Valid:gc.alloc.rate           thrpt   30      1351.445 ±     37.166  MB/sec
+IbanBenchmarks.bm4_Garvelink_Valid:gc.alloc.rate.norm      thrpt   30       881.659 ±      1.109    B/op
+IbanBenchmarks.bm4_Garvelink_Valid:gc.count                thrpt   30       180.000               counts
+IbanBenchmarks.bm4_Garvelink_Valid:gc.time                 thrpt   30       143.000                   ms
+IbanBenchmarks.bm4_Garvelink_Valid:stack                   thrpt                NaN                  ---
+IbanBenchmarks.bm5_IbanCommons_Invalid                     thrpt   30  10991232.459 ± 333974.222   ops/s
+IbanBenchmarks.bm5_IbanCommons_Invalid:gc.alloc.rate       thrpt   30       820.730 ±     24.939  MB/sec
+IbanBenchmarks.bm5_IbanCommons_Invalid:gc.alloc.rate.norm  thrpt   30        78.356 ±      0.011    B/op
+IbanBenchmarks.bm5_IbanCommons_Invalid:gc.count            thrpt   30        93.000               counts
+IbanBenchmarks.bm5_IbanCommons_Invalid:gc.time             thrpt   30        26.000                   ms
+IbanBenchmarks.bm5_IbanCommons_Invalid:stack               thrpt                NaN                  ---
+IbanBenchmarks.bm6_Iban4j_Invalid                          thrpt   30   1502218.464 ± 147249.082   ops/s
+IbanBenchmarks.bm6_Iban4j_Invalid:gc.alloc.rate            thrpt   30      1430.007 ±    141.859  MB/sec
+IbanBenchmarks.bm6_Iban4j_Invalid:gc.alloc.rate.norm       thrpt   30       998.819 ±      7.049    B/op
+IbanBenchmarks.bm6_Iban4j_Invalid:gc.count                 thrpt   30       187.000               counts
+IbanBenchmarks.bm6_Iban4j_Invalid:gc.time                  thrpt   30        45.000                   ms
+IbanBenchmarks.bm6_Iban4j_Invalid:stack                    thrpt                NaN                  ---
+IbanBenchmarks.bm7_Apache_Invalid                          thrpt   30   9166115.531 ± 312516.057   ops/s
+IbanBenchmarks.bm7_Apache_Invalid:gc.alloc.rate            thrpt   30      1441.838 ±     48.357  MB/sec
+IbanBenchmarks.bm7_Apache_Invalid:gc.alloc.rate.norm       thrpt   30       165.072 ±      0.151    B/op
+IbanBenchmarks.bm7_Apache_Invalid:gc.count                 thrpt   30       164.000               counts
+IbanBenchmarks.bm7_Apache_Invalid:gc.time                  thrpt   30        68.000                   ms
+IbanBenchmarks.bm7_Apache_Invalid:stack                    thrpt                NaN                  ---
+IbanBenchmarks.bm8_Garvelink_Invalid                       thrpt   30   1721276.754 ±  55096.007   ops/s
+IbanBenchmarks.bm8_Garvelink_Invalid:gc.alloc.rate         thrpt   30      1130.816 ±     36.126  MB/sec
+IbanBenchmarks.bm8_Garvelink_Invalid:gc.alloc.rate.norm    thrpt   30       689.331 ±      0.115    B/op
+IbanBenchmarks.bm8_Garvelink_Invalid:gc.count              thrpt   30       147.000               counts
+IbanBenchmarks.bm8_Garvelink_Invalid:gc.time               thrpt   30        44.000                   ms
+IbanBenchmarks.bm8_Garvelink_Invalid:stack                 thrpt                NaN                  ---
+
+Benchmark result is saved to /home/spannm/projects/github/speedbanking/iban-commons-benchmarks/target/run-benchmarks-20260301-100813.json

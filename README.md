@@ -1,118 +1,129 @@
 # IBAN Commons Benchmarks
 
-A performance comparison module using the [**Java Microbenchmark Harness (JMH)**](https://github.com/openjdk/jmh) to evaluate throughput and latency 
-of different IBAN validation libraries in the Java ecosystem.
+A performance comparison module using the [**Java Microbenchmark Harness (JMH)**](https://github.com/openjdk/jmh) to evaluate throughput and memory allocation of different IBAN libraries in the Java ecosystem.
 
 If you feel other libraries should be included, or have suggestions for this suite, please get in touch.
 
 ## 🎯 Benchmark Scope
 
-The benchmark evaluates the performance of three different IBAN validation approaches:
+Two benchmark groups cover the full validation spectrum:
 
-| Benchmark | Library                                                                            | Description                                       |
-|:----------|:-----------------------------------------------------------------------------------|:--------------------------------------------------|
-| `bm1x`    | [`iban-commons` (de.speedbanking)](https://github.com/SpeedBankingDe/iban-commons) | Validation and object creation (using `tryParse`) |
-| `bm2x`    | [`iban4j` (org.iban4j)](https://iban4j.org/)                                       | Validation and object creation                    |
-| `bm3a`    | [`Apache Commons Validator`](https://commons.apache.org/proper/commons-validator/) | IBAN validation only (boolean result)             |
-| `bm4b`    | [`garvelink iban` (nl.garvelink.oss)](https://github.com/barend/java-iban)         | Object creation                                   |
+| Benchmark  | Library                                                                            | Description                                              |
+|:----------:|:-----------------------------------------------------------------------------------|:---------------------------------------------------------|
+|   `bm1`    | [`iban-commons` (de.speedbanking)](https://github.com/SpeedBankingDe/iban-commons) | High-performance ASCII-math validation – **valid** IBANs |
+|   `bm2`    | [`iban4j` (org.iban4j)](https://iban4j.org/)                                       | Exception-based validation – **valid** IBANs             |
+|   `bm3`    | [`Apache Commons Validator`](https://commons.apache.org/proper/commons-validator/) | Regex-based IBAN validation – **valid** IBANs            |
+|   `bm4`    | [`garvelink iban` (nl.garvelink.oss)](https://github.com/barend/java-iban)         | Object-oriented parsing – **valid** IBANs                |
+|   `bm5`    | `iban-commons`                                                                     | Same as bm1 – **invalid** IBANs (rejection cost)         |
+|   `bm6`    | `iban4j`                                                                           | Same as bm2 – **invalid** IBANs (rejection cost)         |
+|   `bm7`    | `Apache Commons Validator`                                                         | Same as bm3 – **invalid** IBANs (rejection cost)         |
+|   `bm8`    | `garvelink iban`                                                                   | Same as bm4 – **invalid** IBANs (rejection cost)         |
 
-The data generation process in `IbanBenchmarks.java` ensures a realistic mix of **normalized**, **formatted** (with spaces), **valid**, and **invalid** 
-random IBAN strings of random countries to prevent optimization by JVMs and libraries alike.
+The test data uses a 50/50 mix of normalized and space-formatted IBAN strings across all supported countries, generated randomly per run to prevent JIT over-specialisation.
+Invalid IBANs are corrupted either by a random character swap (breaking the checksum) or by removing 1–3 characters (breaking the length).
 
-Iban object and exceptions on failure are consumed by JMH blackholes (`org.openjdk.jmh.infra.Blackhole`).
+### A note on `-XX:-StackTraceInThrowable`
 
-## ⚙️ Requirements
+All forks run with this JVM flag, which suppresses stack trace generation.
+This isolates the **pure algorithmic cost** of validation and makes the comparison fair for libraries that use exceptions for control flow (notably `iban4j`).
+It does **not** reflect default production behaviour.
+For a production-realistic measurement, remove the flag from `@Fork` and re-run.
 
-* [Java Development Kit (JDK) **11 or higher**](https://adoptium.net/de/temurin/releases) (iban4j requires Java 11 or above)
+## ⚙️ Requirements & Environment
 
-* [Apache Maven 3.x](https://maven.apache.org/)
+* **JDK** – [Java 21 or higher](https://adoptium.net/de/temurin/releases) (optimised for Generational ZGC)
+* **Build Tool** – [Apache Maven 3.9+](https://maven.apache.org/)
+* **OS** – Linux (recommended for CPU affinity via `taskset`) or Windows
 
 ## 🚀 Building and Execution
 
-The project uses the `maven-shade-plugin` to create a single, executable JAR file containing all necessary dependencies, 
-including the **JMH runner** `org.openjdk.jmh.Main` itself.
+The project uses the `maven-shade-plugin` to produce a single executable JAR containing all dependencies including the JMH runner.
 
 ### 1. Build the Executable JAR
-Run the following command from the root directory of this module:
 
 ```bash
 mvn clean package
+# or simply (defaultGoal is clean package):
+mvn
 ```
 
-### 2. Run the Benchmarks
+This produces `target/iban-commons-benchmarks.jar` and copies the run scripts to `target/`.
 
-Execute the JAR using the Java runtime. The main class is configured to automatically find and run all benchmarks in the IbanBenchmarks class.
+### 2. Run Automated Benchmarks
+
+The provided scripts detect system information, configure Generational ZGC, and – on Linux – pin execution to a single CPU core to minimise measurement jitter.
+
+**Linux:**
+```bash
+./target/run-benchmarks.sh
+```
+
+**Windows:**
+```batch
+target\run-benchmarks.cmd
+```
+
+Or run the JAR directly with standard JMH options:
 
 ```bash
-# example command to run the IBAN benchmarks (class IbanBenchmarks)
-java -jar target/iban-commons-benchmarks-1.0.0-SNAPSHOT.jar IbanBenchmarks
+# Run all benchmarks
+java -jar target/iban-commons-benchmarks.jar IbanBenchmarks
+
+# Run only the valid-IBAN group with custom iteration settings
+java -jar target/iban-commons-benchmarks.jar "bm[1-4]" -i 10 -r 5s
+
+# Run with GC profiling
+java -jar target/iban-commons-benchmarks.jar IbanBenchmarks -prof gc
 ```
 
-### 3. Customize JMH Options (optional)
+Results are written as `.log` and `.json` to `target/` and automatically archived to `benchmarks/history/` for regression tracking.
 
-You can pass standard JMH options as arguments to the JAR.
-For example, to run only the iban-commons benchmarks (bm1x) with more measurement iterations:
+## 📊 Results & Visualization
 
-```bash
-java -jar target/iban-commons-benchmarks-1.0.0-SNAPSHOT.jar bm1.* -i 10 -r 5s
-```
+To visualize results interactively:
 
-### 4. Sample Output
+1. Go to **[JMH Visualizer](https://jmh.morethan.io/)**.
+2. Drag and drop the `.json` file from `target/` or `benchmarks/history/`.
 
-```bash
-date -I && mvn -v
-```
+### 📊 Latest Performance Snapshot (2026-03-01)
 
-```bash
-2026-01-07
-Apache Maven 3.9.10 (5f519b97e944483d878815739f519b2eade0a91d)
-Maven home: /opt/maven
-Java version: 21.0.7, vendor: Eclipse Adoptium, runtime: /opt/openJDK/jdk-21.0.7+6
-Default locale: en_US, platform encoding: UTF-8
-OS name: "linux", version: "6.8.0-60-generic", arch: "amd64", family: "unix"
-```
---- 
+Measured on **Intel(R) Core(TM) i7-1165G7 @ 2.80GHz**, **OpenJDK 21.0.7**, Linux,
+single core (`taskset -c 0`), Generational ZGC, `-XX:-StackTraceInThrowable`.
+30 measurement iterations (3 forks × 10 iterations × 2 s each).
 
-```bash
-java -jar target/iban-commons-benchmarks-1.0.0-SNAPSHOT.jar IbanBenchmarks -prof gc
-```
+#### Valid IBANs (best-case / accept path)
 
-```text
-# Run complete. Total time: 00:01:47
+|  #  | Library             |  Throughput (ops/s) |   ±Error |  Memory (B/op) | vs. iban-commons |
+|:---:|:--------------------|--------------------:|---------:|---------------:|:----------------:|
+| bm1 | 🌟 **iban-commons** |       **7,721,430** | ±449,089 |      **105.9** |     baseline     |
+| bm3 | Apache Commons      |           4,081,226 | ±220,088 |          318.9 |   ~1.9× slower   |
+| bm2 | iban4j              |           1,800,153 |  ±68,331 |        1,113.9 |   ~4.3× slower   |
+| bm4 | Garvelink           |           1,608,650 |  ±44,688 |          881.7 |   ~4.8× slower   |
 
-REMEMBER: The numbers below are just data. [..]
+#### Invalid IBANs (rejection path)
 
-NOTE: Current JVM experimentally supports Compiler Blackholes [..]
+|  #  | Library             |  Throughput (ops/s) |   ±Error |  Memory (B/op) | vs. iban-commons |
+|:---:|:--------------------|--------------------:|---------:|---------------:|:----------------:|
+| bm5 | 🌟 **iban-commons** |      **10,991,232** | ±333,974 |       **78.4** |     baseline     |
+| bm7 | Apache Commons      |           9,166,116 | ±312,516 |          165.1 |   ~1.2× slower   |
+| bm8 | Garvelink           |           1,721,277 |  ±55,096 |          689.3 |   ~6.4× slower   |
+| bm6 | iban4j              |           1,502,218 | ±147,249 |          998.8 |   ~7.3× slower   |
 
-Benchmark                                                           Mode  Cnt           Score     Error   Units
-IbanBenchmarks.bm1a_IbanCommons_IsValid                            thrpt    5           5.257 ±   0.138   ops/s
-IbanBenchmarks.bm1a_IbanCommons_IsValid:gc.alloc.rate              thrpt    5         686.158 ±  18.013  MB/sec
-IbanBenchmarks.bm1a_IbanCommons_IsValid:gc.alloc.rate.norm         thrpt    5   136888820.945 ±   5.010    B/op
-IbanBenchmarks.bm1a_IbanCommons_IsValid:gc.count                   thrpt    5           6.000            counts
-IbanBenchmarks.bm1a_IbanCommons_IsValid:gc.time                    thrpt    5         128.000                ms
-IbanBenchmarks.bm1b_IbanCommons_ObjectCreation                     thrpt    5           2.993 ±   0.152   ops/s
-IbanBenchmarks.bm1b_IbanCommons_ObjectCreation:gc.alloc.rate       thrpt    5         724.425 ±  36.865  MB/sec
-IbanBenchmarks.bm1b_IbanCommons_ObjectCreation:gc.alloc.rate.norm  thrpt    5   253853885.257 ± 347.095    B/op
-IbanBenchmarks.bm1b_IbanCommons_ObjectCreation:gc.count            thrpt    5           7.000            counts
-IbanBenchmarks.bm1b_IbanCommons_ObjectCreation:gc.time             thrpt    5         147.000                ms
-IbanBenchmarks.bm2a_Iban4j_IsValid                                 thrpt    5           0.814 ±   0.050   ops/s
-IbanBenchmarks.bm2a_Iban4j_IsValid:gc.alloc.rate                   thrpt    5        1262.685 ±  77.279  MB/sec
-IbanBenchmarks.bm2a_Iban4j_IsValid:gc.alloc.rate.norm              thrpt    5  1627346303.200 ±  38.352    B/op
-IbanBenchmarks.bm2a_Iban4j_IsValid:gc.count                        thrpt    5          13.000            counts
-IbanBenchmarks.bm2a_Iban4j_IsValid:gc.time                         thrpt    5         202.000                ms
-IbanBenchmarks.bm2b_Iban4j_ObjectCreation                          thrpt    5           0.754 ±   0.096   ops/s
-IbanBenchmarks.bm2b_Iban4j_ObjectCreation:gc.alloc.rate            thrpt    5        1174.963 ± 149.812  MB/sec
-IbanBenchmarks.bm2b_Iban4j_ObjectCreation:gc.alloc.rate.norm       thrpt    5  1633744840.000 ±   0.001    B/op
-IbanBenchmarks.bm2b_Iban4j_ObjectCreation:gc.count                 thrpt    5          13.000            counts
-IbanBenchmarks.bm2b_Iban4j_ObjectCreation:gc.time                  thrpt    5         205.000                ms
-IbanBenchmarks.bm3a_ApacheCommons_IsValid                          thrpt    5           4.786 ±   0.518   ops/s
-IbanBenchmarks.bm3a_ApacheCommons_IsValid:gc.alloc.rate            thrpt    5        1491.181 ± 161.336  MB/sec
-IbanBenchmarks.bm3a_ApacheCommons_IsValid:gc.alloc.rate.norm       thrpt    5   326760291.200 ±   0.001    B/op
-IbanBenchmarks.bm3a_ApacheCommons_IsValid:gc.count                 thrpt    5          13.000            counts
-IbanBenchmarks.bm3a_ApacheCommons_IsValid:gc.time                  thrpt    5         193.000                ms
-IbanBenchmarks.bm4b_garvelink_ObjectCreation                       thrpt    5           0.863 ±   0.047   ops/s
-IbanBenchmarks.bm4b_garvelink_ObjectCreation:gc.alloc.rate         thrpt    5         926.411 ±  49.976  MB/sec
-IbanBenchmarks.bm4b_garvelink_ObjectCreation:gc.alloc.rate.norm    thrpt    5  1126050312.000 ±   0.001    B/op
-IbanBenchmarks.bm4b_garvelink_ObjectCreation:gc.count              thrpt    5           9.000            counts
-IbanBenchmarks.bm4b_garvelink_ObjectCreation:gc.time               thrpt    5         178.000                ms
-```
+### Key Takeaways
+
+**iban-commons is consistently fastest** across both valid and invalid input.
+Its rejection path is actually *faster* than its accept path (~11 M ops/s vs. ~7.7 M ops/s),
+because many invalid IBANs are rejected early by length or country-code checks before the
+full Mod-97 computation is reached.
+
+**Memory allocation is 3×–10× lower** than competing libraries.
+The ASCII-math approach for Modulo 97 avoids the intermediate `String` and `BigInteger`
+allocations that account for the high B/op figures in `iban4j` (>1,100 B/op) and Garvelink (>880 B/op).
+
+**Apache Commons** performs surprisingly well on the rejection path (~9.2 M ops/s)
+because its regex can short-circuit on structural failures before evaluating the full checksum.
+On the valid path it ranks second (~4.1 M ops/s) at a moderate memory cost (~320 B/op).
+
+**iban4j and Garvelink** both incur significant allocation on the rejection path
+because their exception-based API constructs full exception objects even when
+`-XX:-StackTraceInThrowable` eliminates the stack trace overhead.
