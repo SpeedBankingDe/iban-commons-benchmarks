@@ -44,8 +44,12 @@ type "%LOG_FILE%"
 :: Run benchmarks
 :: ---------------------------------------------------------------------------
 echo Running benchmarks...
+
+:: Note: The following line has the JMH-specific override flags removed/commented out.
+:: To re-enable them, add them back to the java command below.
+:: Disabled flags: -bm thrpt -tu s -f 3 -wi 5 -i 10
+
 java -Xms2G -Xmx2G -XX:+UseZGC -XX:+ZGenerational -jar "%JAR_PATH%" ^
-  -bm thrpt -tu s -f 3 -wi 5 -i 10 ^
   -prof gc ^
   -rf json -rff "%JSON_FILE%" ^
   | powershell -NoProfile -Command "$input | Tee-Object -FilePath '%LOG_FILE%' -Append"

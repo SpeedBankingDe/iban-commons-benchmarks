@@ -10,17 +10,20 @@ Two benchmark groups cover the full validation spectrum:
 
 | Benchmark  | Library                                                                            | Description                                              |
 |:----------:|:-----------------------------------------------------------------------------------|:---------------------------------------------------------|
-|   `bm1`    | [`iban-commons` (de.speedbanking)](https://github.com/SpeedBankingDe/iban-commons) | High-performance ASCII-math validation – **valid** IBANs |
-|   `bm2`    | [`iban4j` (org.iban4j)](https://iban4j.org/)                                       | Exception-based validation – **valid** IBANs             |
-|   `bm3`    | [`Apache Commons Validator`](https://commons.apache.org/proper/commons-validator/) | Regex-based IBAN validation – **valid** IBANs            |
-|   `bm4`    | [`garvelink iban` (nl.garvelink.oss)](https://github.com/barend/java-iban)         | Object-oriented parsing – **valid** IBANs                |
-|   `bm5`    | `iban-commons`                                                                     | Same as bm1 – **invalid** IBANs (rejection cost)         |
-|   `bm6`    | `iban4j`                                                                           | Same as bm2 – **invalid** IBANs (rejection cost)         |
-|   `bm7`    | `Apache Commons Validator`                                                         | Same as bm3 – **invalid** IBANs (rejection cost)         |
-|   `bm8`    | `garvelink iban`                                                                   | Same as bm4 – **invalid** IBANs (rejection cost)         |
+|   `bmv1`   | [`iban-commons` (de.speedbanking)](https://github.com/SpeedBankingDe/iban-commons) | High-performance ASCII-math validation – **valid** IBANs |
+|   `bmv2`   | [`iban4j` (org.iban4j)](https://iban4j.org/)                                       | Exception-based validation – **valid** IBANs             |
+|   `bmv3`   | [`Apache Commons Validator`](https://commons.apache.org/proper/commons-validator/) | Regex-based IBAN validation – **valid** IBANs            |
+|   `bmv4`   | [`garvelink iban` (nl.garvelink.oss)](https://github.com/barend/java-iban)         | Object-oriented parsing – **valid** IBANs                |
+|   `bmv5`   | [`jbanking` (fr.marcwrobel)](https://github.com/marcwrobel/jbanking)               | Feature-rich banking toolkit – **valid** IBANs           |
+|   `bmi1`   | `iban-commons`                                                                     | Same as bmv1 – **invalid** IBANs (rejection cost)        |
+|   `bmi2`   | `iban4j`                                                                           | Same as bmv2 – **invalid** IBANs (rejection cost)        |
+|   `bmi3`   | `Apache Commons Validator`                                                         | Same as bmv3 – **invalid** IBANs (rejection cost)        |
+|   `bmi4`   | `garvelink iban`                                                                   | Same as bmv4 – **invalid** IBANs (rejection cost)        |
+|   `bmi5`   | `jbanking`                                                                         | Same as bmv5 – **invalid** IBANs (rejection cost)        |
 
-The test data uses a 50/50 mix of normalized and space-formatted IBAN strings across all supported countries, generated randomly per run to prevent JIT over-specialisation.
-Invalid IBANs are corrupted either by a random character swap (breaking the checksum) or by removing 1–3 characters (breaking the length).
+The test data uses a 50/50 mix of normalized and space-formatted IBAN strings across all supported countries, generated randomly per run to prevent JIT over-specialization.
+Each invalid IBAN is derived from a valid one by applying one of six sabotage strategies with equal probability:
+incrementing a check digit (triggering a Mod-97 failure), replacing the country code with the non-registered code XY, substituting a valid but mismatched ISO 3166 country code, injecting a letter into the numeric BBAN section, swapping two adjacent characters (transposition), or truncating the string below the minimum structural length.
 
 ### A note on `-XX:-StackTraceInThrowable`
 
@@ -70,7 +73,7 @@ Or run the JAR directly with standard JMH options:
 java -jar target/iban-commons-benchmarks.jar IbanBenchmarks
 
 # Run only the valid-IBAN group with custom iteration settings
-java -jar target/iban-commons-benchmarks.jar "bm[1-4]" -i 10 -r 5s
+java -jar target/iban-commons-benchmarks.jar "bm[1-5]" -i 10 -r 5s
 
 # Run with GC profiling
 java -jar target/iban-commons-benchmarks.jar IbanBenchmarks -prof gc
@@ -85,7 +88,7 @@ To visualize results interactively:
 1. Go to **[JMH Visualizer](https://jmh.morethan.io/)**.
 2. Drag and drop the `.json` file from `target/` or `benchmarks/history/`.
 
-### 📊 Latest Performance Snapshot (2026-03-01)
+### 📊 Latest Performance Snapshot (2026-04-09)
 
 Measured on **Intel(R) Core(TM) i7-1165G7 @ 2.80GHz**, **OpenJDK 21.0.7**, Linux,
 single core (`taskset -c 0`), Generational ZGC, `-XX:-StackTraceInThrowable`.
@@ -93,36 +96,42 @@ single core (`taskset -c 0`), Generational ZGC, `-XX:-StackTraceInThrowable`.
 
 #### Valid IBANs (best-case / accept path)
 
-|  #  | Library             |  Throughput (ops/s) |   ±Error |  Memory (B/op) | vs. iban-commons |
-|:---:|:--------------------|--------------------:|---------:|---------------:|:----------------:|
-| bm1 | 🌟 **iban-commons** |       **7,721,430** | ±449,089 |      **105.9** |     baseline     |
-| bm3 | Apache Commons      |           4,081,226 | ±220,088 |          318.9 |   ~1.9× slower   |
-| bm2 | iban4j              |           1,800,153 |  ±68,331 |        1,113.9 |   ~4.3× slower   |
-| bm4 | Garvelink           |           1,608,650 |  ±44,688 |          881.7 |   ~4.8× slower   |
+|   #   | Library              |  Throughput (ops/s) |   ±Error |  Memory (B/op) | vs. iban-commons |
+|:-----:|:---------------------|--------------------:|---------:|---------------:|:----------------:|
+| bmv1  | 🌟 **iban-commons**  |       **7,207,452** | ±435,970 |       **47.9** |     baseline     |
+| bmv5  | jbanking             |           6,108,009 | ±222,367 |          254.8 |   ~1.2× slower   |
+| bmv3  | Apache Commons       |           5,243,764 | ±243,741 |          281.0 |   ~1.4× slower   |
+| bmv2  | iban4j               |           1,948,100 |  ±92,893 |        1,340.6 |   ~3.7× slower   |
+| bmv4  | Garvelink            |           1,292,532 |  ±44,896 |        1,063.0 |   ~5.6× slower   |
 
 #### Invalid IBANs (rejection path)
 
-|  #  | Library             |  Throughput (ops/s) |   ±Error |  Memory (B/op) | vs. iban-commons |
-|:---:|:--------------------|--------------------:|---------:|---------------:|:----------------:|
-| bm5 | 🌟 **iban-commons** |      **10,991,232** | ±333,974 |       **78.4** |     baseline     |
-| bm7 | Apache Commons      |           9,166,116 | ±312,516 |          165.1 |   ~1.2× slower   |
-| bm8 | Garvelink           |           1,721,277 |  ±55,096 |          689.3 |   ~6.4× slower   |
-| bm6 | iban4j              |           1,502,218 | ±147,249 |          998.8 |   ~7.3× slower   |
+|   #   | Library              |  Throughput (ops/s) |   ±Error |  Memory (B/op) | vs. iban-commons |
+|:-----:|:---------------------|--------------------:|---------:|---------------:|:----------------:|
+| bmi1  | 🌟 **iban-commons**  |      **11,986,711** | ±787,003 |       **39.9** |     baseline     |
+| bmi5  | jbanking             |          10,080,195 | ±651,958 |          152.7 |   ~1.2× slower   |
+| bmi3  | Apache Commons       |           9,853,673 | ±523,112 |          170.8 |   ~1.2× slower   |
+| bmi2  | iban4j               |           1,992,301 |  ±69,978 |        1,098.7 |   ~6.0× slower   |
+| bmi4  | Garvelink            |           1,508,470 | ±109,395 |          814.1 |   ~7.9× slower   |
 
 ### Key Takeaways
 
 **iban-commons is consistently fastest** across both valid and invalid input.
-Its rejection path is actually *faster* than its accept path (~11 M ops/s vs. ~7.7 M ops/s),
+Its rejection path is actually *faster* than its accept path (~12 M ops/s vs. ~7.2 M ops/s),
 because many invalid IBANs are rejected early by length or country-code checks before the
 full Mod-97 computation is reached.
 
-**Memory allocation is 3×–10× lower** than competing libraries.
-The ASCII-math approach for Modulo 97 avoids the intermediate `String` and `BigInteger`
-allocations that account for the high B/op figures in `iban4j` (>1,100 B/op) and Garvelink (>880 B/op).
+**Memory allocation is dramatically lower** than all competing libraries — just ~48 B/op on
+the accept path and ~40 B/op on the rejection path. The ASCII-math approach for Modulo 97
+avoids the intermediate `String` and `BigInteger` allocations that drive up B/op figures in
+`iban4j` (>1,340 B/op valid, >1,099 B/op invalid) and Garvelink (>1,063 B/op valid).
 
-**Apache Commons** performs surprisingly well on the rejection path (~9.2 M ops/s)
-because its regex can short-circuit on structural failures before evaluating the full checksum.
-On the valid path it ranks second (~4.1 M ops/s) at a moderate memory cost (~320 B/op).
+**jbanking** is the strongest new challenger, ranking second on both paths (~6.1 M ops/s valid,
+~10.1 M ops/s invalid) at a moderate memory cost (~255 B/op valid, ~153 B/op invalid).
+
+**Apache Commons** remains competitive on the rejection path (~9.9 M ops/s) because its
+regex can short-circuit on structural failures before evaluating the full checksum. On the
+valid path it ranks third (~5.2 M ops/s), just behind jbanking.
 
 **iban4j and Garvelink** both incur significant allocation on the rejection path
 because their exception-based API constructs full exception objects even when

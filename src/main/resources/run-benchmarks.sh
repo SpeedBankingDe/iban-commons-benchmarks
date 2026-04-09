@@ -51,7 +51,13 @@ fi
 # Run benchmarks (pinned to core 0 when taskset is available)
 # ---------------------------------------------------------------------------
 JAVA_CMD=(java -Xms2G -Xmx2G -XX:+UseZGC -XX:+ZGenerational -jar "$JAR_PATH"
-    -bm thrpt -tu s -f 3 -wi 5 -i 10
+    # -bm thrpt
+    # -tu s
+    # -f 1          # Reduziert auf 1 Fork für schnellere Ergebnisse während der Entwicklung
+    # -wi 3         # 3 Warmup Iterationen
+    # -w 1s         # EXPLICIT: 1 Sekunde Warmup Zeit
+    # -i 5          # 5 Measurement Iterationen
+    # -r 1s         # EXPLICIT: 1 Sekunde Measurement Zeit
     -prof gc
     -rf json -rff "$JSON_FILE")
 
