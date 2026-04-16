@@ -5,8 +5,6 @@ import de.speedbanking.util.Iso3166Alpha2;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
@@ -57,6 +55,80 @@ public final class IbanBenchmarks {
     }
 
     /**
+     * Benchmarks the validation throughput of the {@code speedbanking iban-commons} library
+     * against valid IBANs.
+     *
+     * @param state JMH state holding the valid IBAN dataset
+     * @param bh    {@link Blackhole} to prevent dead-code elimination by the JIT compiler
+     */
+    static <T extends BaseState> void run_IbanCommons(T state, Blackhole bh) {
+        for (String iban : state.ibans) {
+            bh.consume(de.speedbanking.iban.IbanValidator.isValid(iban));
+        }
+    }
+
+    /**
+     * Benchmarks the validation throughput of the {@code iban4j} library against valid IBANs.
+     *
+     * @param state JMH state holding the valid IBAN dataset
+     * @param bh    {@link Blackhole} to prevent dead-code elimination by the JIT compiler
+     */
+    static <T extends BaseState> void run_Iban4j(T state, Blackhole bh) {
+        for (String iban : state.ibans) {
+            bh.consume(org.iban4j.IbanUtil.isValid(iban));
+        }
+    }
+
+    /**
+     * Benchmarks the validation throughput of the {@code Apache Commons Validator} library
+     * against valid IBANs.
+     * <p>
+     * The Apache validator uses regex-based IBAN validation and is obtained as a singleton
+     * via {@link org.apache.commons.validator.routines.IBANValidator#getInstance()}.
+     *
+     * @param state JMH state holding the valid IBAN dataset
+     * @param bh    {@link Blackhole} to prevent dead-code elimination by the JIT compiler
+     */
+    static <T extends BaseState> void run_Apache(T state, Blackhole bh) {
+        for (String iban : state.ibans) {
+            bh.consume(state.apacheValidator.isValid(iban));
+        }
+    }
+
+    /**
+     * Benchmarks the rejection throughput of the {@code garvelink iban} library
+     * against invalid IBANs.
+     * <p>
+     * Since {@code IBAN.parse()} throws an exception for invalid input, the exception is
+     * intentionally swallowed here – the rejection path is the dominant path in this benchmark.
+     *
+     * @param state JMH state holding the invalid IBAN dataset
+     * @param bh    {@link Blackhole} to prevent dead-code elimination by the JIT compiler
+     */
+    static <T extends BaseState> void run_Garvelink(T state, Blackhole bh) {
+        for (String iban : state.ibans) {
+            try {
+                bh.consume(nl.garvelink.iban.IBAN.parse(iban));
+            } catch (Exception ignored) {
+                // expected for every entry in the invalid dataset
+            }
+        }
+    }
+
+    /**
+     * Benchmarks the validation throughput of the {@code marcwrobel jbanking} library
+     * against valid IBANs.
+     *
+     * @param state JMH state holding the valid IBAN dataset
+     * @param bh    {@link Blackhole} to prevent dead-code elimination by the JIT compiler
+     */
+    static <T extends BaseState> void run_JBanking(T state, Blackhole bh) {
+        for (String iban : state.ibans) {
+            bh.consume(fr.marcwrobel.jbanking.iban.Iban.isValid(iban));
+        }
+    }
+
+    /**
      * Shared base state for all benchmark groups.
      * <p>
      * Handles generation of the IBAN dataset and initialization of third-party validators.
@@ -71,7 +143,9 @@ public final class IbanBenchmarks {
          * requires no synchronization and therefore introduces no artificial contention points
          * in JMH benchmarks.
          */
-        final ThreadLocalRandom random = ThreadLocalRandom.current();
+        final ThreadLocalRandom random     = ThreadLocalRandom.current();
+
+        int                     targetSize = TARGET_SIZE;
 
         /**
          * The generated IBAN array iterated by all benchmark methods.
@@ -90,6 +164,11 @@ public final class IbanBenchmarks {
          */
         org.apache.commons.validator.routines.IBANValidator apacheValidator;
 
+        BaseState withTargetSize(int targetSize) {
+            this.targetSize = targetSize;
+            return this;
+        }
+
         /**
          * Initializes the shared benchmark state at trial level.
          * <p>
@@ -104,13 +183,12 @@ public final class IbanBenchmarks {
          */
         @Setup(Level.Trial)
         public final void setup() {
-            ibans = generateIbans(TARGET_SIZE);
+            ibans = generateIbans(targetSize);
 
             apacheValidator = org.apache.commons.validator.routines.IBANValidator.getInstance();
 
-            // disable NCD features for a pure ISO 7064 Mod 97-10 baseline comparison
-            de.speedbanking.iban.IbanConfig.NCD_CALCULATE.disable();
-            de.speedbanking.iban.IbanConfig.NCD_VALIDATE.disable();
+            // disable space-formatting, lowercase support, and NCD features for a pure ISO 7064 Mod 97-10 baseline comparison
+            IbanConfig.reset(IbanConfig.DEFAULT);
 
             setupDetail();
 
@@ -124,7 +202,7 @@ public final class IbanBenchmarks {
          * The default implementation is a no-op; subclasses may override this method
          * to, for example, corrupt the dataset for rejection benchmarks.
          */
-        public void setupDetail() {}
+        protected void setupDetail() {}
 
         /**
          * Generates a mixed set of random IBANs based on {@link IbanRegistry}.
@@ -137,31 +215,15 @@ public final class IbanBenchmarks {
          * @param size number of IBANs to generate
          * @return array of length {@code size} containing random IBAN strings
          */
-        String[] generateIbans(int size) {
-            List<IbanRegistry> countries = Arrays.asList(IbanRegistry.values());
+        final String[] generateIbans(int size) {
             String[] result = new String[size];
 
             for (int i = 0; i < size; i++) {
-                Iban iban = RandomIban.of(getRandomListEntry(countries));
-                result[i] = random.nextBoolean()
-                    ? iban.toString()
-                    : iban.toFormattedString();
+                de.speedbanking.iban.Iban iban = de.speedbanking.iban.RandomIban.any();
+                result[i] = iban.toString();
             }
 
             return result;
-        }
-
-        /**
-         * Retrieves a random element from the provided list.
-         * <p>
-         * Selection is uniform across all positions (uniform random sampling).
-         *
-         * @param <T>  type of elements in the list
-         * @param list list to select from; must not be {@code null} or empty
-         * @return a randomly selected element
-         */
-        <T> T getRandomListEntry(List<T> list) {
-            return list.get(random.nextInt(list.size()));
         }
 
         /**
@@ -182,7 +244,7 @@ public final class IbanBenchmarks {
          * @return a new string with two characters swapped, the unchanged string for
          *         inputs shorter than 2, or {@code null} for a {@code null} input
          */
-        public String swapRandomChars(final CharSequence input) {
+        String swapRandomChars(final CharSequence input) {
             if (input == null || input.length() < 2) {
                 return input == null ? null : input.toString();
             }
@@ -280,7 +342,7 @@ public final class IbanBenchmarks {
          * ensuring no accidentally still-valid entry remains in the dataset.
          */
         @Override
-        public void setupDetail() {
+        protected void setupDetail() {
             for (int i = 0; i < ibans.length; i++) {
                 StringBuilder sb = new StringBuilder(ibans[i]);
 
@@ -378,71 +440,34 @@ public final class IbanBenchmarks {
      */
     @BenchmarkMode(Mode.Throughput)
     @OutputTimeUnit(TimeUnit.SECONDS)
-    @Warmup(iterations = 3, time = 1)
+    @Warmup(iterations = 5, time = 2)
     @Measurement(iterations = 5, time = 2)
     @Fork(value = 2, jvmArgs = {
         "-Xms2G",
         "-Xmx2G",
-        "-XX:+UseZGC",
-        "-XX:+ZGenerational",
+        // "-XX:+UseZGC",
+        // "-XX:+ZGenerational",
+        "-XX:+UseParallelGC",
         "-XX:-StackTraceInThrowable"
     })
     public static class ValidBenchmarks {
 
-        /**
-         * Benchmarks the validation throughput of the {@code speedbanking iban-commons} library
-         * against valid IBANs.
-         *
-         * @param state JMH state holding the valid IBAN dataset
-         * @param bh    {@link Blackhole} to prevent dead-code elimination by the JIT compiler
-         */
         @Benchmark
         @OperationsPerInvocation(TARGET_SIZE)
         public void bmv1_IbanCommons(ValidState state, Blackhole bh) {
-            for (String iban : state.ibans) {
-                bh.consume(de.speedbanking.iban.Iban.isValid(iban));
-            }
+            run_IbanCommons(state, bh);
         }
 
-        /**
-         * Benchmarks the validation throughput of the {@code iban4j} library against valid IBANs.
-         * <p>
-         * {@code iban4j} uses exceptions for control flow: a valid IBAN produces no exception,
-         * while an invalid one does. The {@code try/catch} block is therefore an inherent part
-         * of the measurement setup.
-         *
-         * @param state JMH state holding the valid IBAN dataset
-         * @param bh    {@link Blackhole} to prevent dead-code elimination by the JIT compiler
-         */
         @Benchmark
         @OperationsPerInvocation(TARGET_SIZE)
         public void bmv2_Iban4j(ValidState state, Blackhole bh) {
-            for (String iban : state.ibans) {
-                try {
-                    org.iban4j.IbanUtil.validate(iban);
-                    bh.consume(true);
-                } catch (Exception ex) {
-                    bh.consume(false);
-                }
-            }
+            run_Iban4j(state, bh);
         }
 
-        /**
-         * Benchmarks the validation throughput of the {@code Apache Commons Validator} library
-         * against valid IBANs.
-         * <p>
-         * The Apache validator uses regex-based IBAN validation and is obtained as a singleton
-         * via {@link org.apache.commons.validator.routines.IBANValidator#getInstance()}.
-         *
-         * @param state JMH state holding the valid IBAN dataset
-         * @param bh    {@link Blackhole} to prevent dead-code elimination by the JIT compiler
-         */
         @Benchmark
         @OperationsPerInvocation(TARGET_SIZE)
         public void bmv3_Apache(ValidState state, Blackhole bh) {
-            for (String iban : state.ibans) {
-                bh.consume(state.apacheValidator.isValid(iban));
-            }
+            run_Apache(state, bh);
         }
 
         /**
@@ -459,29 +484,15 @@ public final class IbanBenchmarks {
         @Benchmark
         @OperationsPerInvocation(TARGET_SIZE)
         public void bmv4_Garvelink(ValidState state, Blackhole bh) {
-            for (String iban : state.ibans) {
-                try {
-                    bh.consume(nl.garvelink.iban.IBAN.parse(iban));
-                } catch (Exception ignored) {
-                    // not expected with a valid dataset
-                }
-            }
+            run_Garvelink(state, bh);
         }
 
-        /**
-         * Benchmarks the validation throughput of the {@code marcwrobel jbanking} library
-         * against valid IBANs.
-         *
-         * @param state JMH state holding the valid IBAN dataset
-         * @param bh    {@link Blackhole} to prevent dead-code elimination by the JIT compiler
-         */
         @Benchmark
         @OperationsPerInvocation(TARGET_SIZE)
         public void bmv5_JBanking(ValidState state, Blackhole bh) {
-            for (String iban : state.ibans) {
-                bh.consume(fr.marcwrobel.jbanking.iban.Iban.isValid(iban));
-            }
+            run_JBanking(state, bh);
         }
+
     }
 
     /**
@@ -494,105 +505,56 @@ public final class IbanBenchmarks {
      */
     @BenchmarkMode(Mode.Throughput)
     @OutputTimeUnit(TimeUnit.SECONDS)
-    @Warmup(iterations = 3, time = 1)
-    @Measurement(iterations = 5, time = 2)
+    @Warmup(iterations = 5, time = 2)
+    @Measurement(iterations = 4, time = 2)
     @Fork(value = 2, jvmArgs = {
         "-Xms2G",
         "-Xmx2G",
-        "-XX:+UseZGC",
-        "-XX:+ZGenerational",
+        // "-XX:+UseZGC",
+        // "-XX:+ZGenerational",
+        "-XX:+UseParallelGC",
         "-XX:-StackTraceInThrowable"
     })
     public static class InvalidBenchmarks {
 
-        /**
-         * Benchmarks the rejection throughput of the {@code speedbanking iban-commons} library
-         * against invalid IBANs.
-         *
-         * @param state JMH state holding the invalid IBAN dataset
-         * @param bh    {@link Blackhole} to prevent dead-code elimination by the JIT compiler
-         */
         @Benchmark
         @OperationsPerInvocation(TARGET_SIZE)
         public void bmi1_IbanCommons(InvalidState state, Blackhole bh) {
-            for (String iban : state.ibans) {
-                bh.consume(de.speedbanking.iban.Iban.isValid(iban));
-            }
+            run_IbanCommons(state, bh);
         }
 
-        /**
-         * Benchmarks the rejection throughput of the {@code iban4j} library against invalid IBANs.
-         * <p>
-         * Since {@code iban4j} uses exceptions for control flow, every invalid IBAN causes an
-         * exception to be thrown. With {@code -XX:-StackTraceInThrowable}, stack trace generation
-         * costs are eliminated, measuring the pure algorithm overhead of the rejection path.
-         *
-         * @param state JMH state holding the invalid IBAN dataset
-         * @param bh    {@link Blackhole} to prevent dead-code elimination by the JIT compiler
-         */
         @Benchmark
         @OperationsPerInvocation(TARGET_SIZE)
         public void bmi2_Iban4j(InvalidState state, Blackhole bh) {
-            for (String iban : state.ibans) {
-                try {
-                    org.iban4j.IbanUtil.validate(iban);
-                    bh.consume(true);
-                } catch (Exception ex) {
-                    bh.consume(false);
-                }
-            }
+            run_Iban4j(state, bh);
         }
 
-        /**
-         * Benchmarks the rejection throughput of the {@code Apache Commons Validator} library
-         * against invalid IBANs.
-         *
-         * @param state JMH state holding the invalid IBAN dataset
-         * @param bh    {@link Blackhole} to prevent dead-code elimination by the JIT compiler
-         */
         @Benchmark
         @OperationsPerInvocation(TARGET_SIZE)
         public void bmi3_Apache(InvalidState state, Blackhole bh) {
-            for (String iban : state.ibans) {
-                bh.consume(state.apacheValidator.isValid(iban));
-            }
+            run_Apache(state, bh);
         }
 
-        /**
-         * Benchmarks the rejection throughput of the {@code garvelink iban} library
-         * against invalid IBANs.
-         * <p>
-         * Since {@code IBAN.parse()} throws an exception for invalid input, the exception is
-         * intentionally swallowed here – the rejection path is the dominant path in this benchmark.
-         *
-         * @param state JMH state holding the invalid IBAN dataset
-         * @param bh    {@link Blackhole} to prevent dead-code elimination by the JIT compiler
-         */
         @Benchmark
         @OperationsPerInvocation(TARGET_SIZE)
         public void bmi4_Garvelink(InvalidState state, Blackhole bh) {
-            for (String iban : state.ibans) {
-                try {
-                    bh.consume(nl.garvelink.iban.IBAN.parse(iban));
-                } catch (Exception ignored) {
-                    // expected for every entry in the invalid dataset
-                }
-            }
+            run_Garvelink(state, bh);
         }
 
-        /**
-         * Benchmarks the rejection throughput of the {@code marcwrobel jbanking} library
-         * against invalid IBANs.
-         *
-         * @param state JMH state holding the invalid IBAN dataset
-         * @param bh    {@link Blackhole} to prevent dead-code elimination by the JIT compiler
-         */
         @Benchmark
         @OperationsPerInvocation(TARGET_SIZE)
         public void bmi5_JBanking(InvalidState state, Blackhole bh) {
-            for (String iban : state.ibans) {
-                bh.consume(fr.marcwrobel.jbanking.iban.Iban.isValid(iban));
-            }
+            run_JBanking(state, bh);
+        }
+    }
+
+    public static void main(String[] args) {
+        BaseState validState = new ValidState().withTargetSize(100);
+        validState.setup();
+
+        for (String iban : validState.ibans) {
+            boolean valid = fr.marcwrobel.jbanking.iban.Iban.isValid(iban);
+            (valid ? System.out : System.err).printf("IBAN is %s : %s%n", valid ? "valid  " : "INVALID", iban);
         }
     }
 
