@@ -22,7 +22,7 @@ Two benchmark groups cover the full validation spectrum:
 |   `bmi5`   | `jbanking`                                                                         | Same as bmv5 – **invalid** IBANs (rejection cost)        |
 
 The test data uses a 50/50 mix of normalized and space-formatted IBAN strings across all supported countries, generated randomly per run to prevent JIT over-specialization.
-Each invalid IBAN is derived from a valid one by applying one of six sabotage strategies with equal probability:
+Each invalid IBAN is derived from a valid one via `RandomIban.invalidString()`, which applies one of six sabotage strategies with equal probability:
 incrementing a check digit (triggering a Mod-97 failure), replacing the country code with the non-registered code XY, substituting a valid but mismatched ISO 3166 country code, injecting a letter into the numeric BBAN section, swapping two adjacent characters (transposition), or truncating the string below the minimum structural length.
 
 ### A note on `-XX:-StackTraceInThrowable`
@@ -88,51 +88,55 @@ To visualize results interactively:
 1. Go to **[JMH Visualizer](https://jmh.morethan.io/)**.
 2. Drag and drop the `.json` file from `target/` or `benchmarks/history/`.
 
-### 📊 Latest Performance Snapshot (2026-04-09)
+### 📊 Latest Performance Snapshot (2026-04-19)
 
 Measured on **Intel(R) Core(TM) i7-1165G7 @ 2.80GHz**, **OpenJDK 21.0.7**, Linux,
-single core (`taskset -c 0`), Generational ZGC, `-XX:-StackTraceInThrowable`.
-30 measurement iterations (3 forks × 10 iterations × 2 s each).
+single core (`taskset -c 0`), ParallelGC, `-XX:-StackTraceInThrowable`.
+2 forks × 4–5 iterations × 2 s each.
 
 #### Valid IBANs (best-case / accept path)
 
-|   #   | Library              |  Throughput (ops/s) |   ±Error |  Memory (B/op) | vs. iban-commons |
-|:-----:|:---------------------|--------------------:|---------:|---------------:|:----------------:|
-| bmv1  | 🌟 **iban-commons**  |       **7,207,452** | ±435,970 |       **47.9** |     baseline     |
-| bmv5  | jbanking             |           6,108,009 | ±222,367 |          254.8 |   ~1.2× slower   |
-| bmv3  | Apache Commons       |           5,243,764 | ±243,741 |          281.0 |   ~1.4× slower   |
-| bmv2  | iban4j               |           1,948,100 |  ±92,893 |        1,340.6 |   ~3.7× slower   |
-| bmv4  | Garvelink            |           1,292,532 |  ±44,896 |        1,063.0 |   ~5.6× slower   |
+|   #   | Library              |  Throughput (ops/s) |  Memory (B/op) | vs. iban-commons |
+|:-----:|:---------------------|--------------------:|---------------:|:----------------:|
+| bmv1  | 🌟 **iban-commons**  |       **5,591,566** |         **~0** |     baseline     |
+| bmv5  | jbanking             |           4,278,475 |            298 |   ~1.3× slower   |
+| bmv3  | Apache Commons       |           3,208,846 |            442 |   ~1.7× slower   |
+| bmv2  | iban4j               |           2,870,107 |          1,133 |   ~1.9× slower   |
+| bmv4  | Garvelink            |           2,269,465 |            867 |   ~2.5× slower   |
 
 #### Invalid IBANs (rejection path)
 
-|   #   | Library              |  Throughput (ops/s) |   ±Error |  Memory (B/op) | vs. iban-commons |
-|:-----:|:---------------------|--------------------:|---------:|---------------:|:----------------:|
-| bmi1  | 🌟 **iban-commons**  |      **11,986,711** | ±787,003 |       **39.9** |     baseline     |
-| bmi5  | jbanking             |          10,080,195 | ±651,958 |          152.7 |   ~1.2× slower   |
-| bmi3  | Apache Commons       |           9,853,673 | ±523,112 |          170.8 |   ~1.2× slower   |
-| bmi2  | iban4j               |           1,992,301 |  ±69,978 |        1,098.7 |   ~6.0× slower   |
-| bmi4  | Garvelink            |           1,508,470 | ±109,395 |          814.1 |   ~7.9× slower   |
+|   #   | Library              |  Throughput (ops/s) |  Memory (B/op) | vs. iban-commons |
+|:-----:|:---------------------|--------------------:|---------------:|:----------------:|
+| bmi1  | 🌟 **iban-commons**  |      **10,740,280** |         **~0** |     baseline     |
+| bmi5  | jbanking             |           7,880,633 |            154 |   ~1.4× slower   |
+| bmi3  | Apache Commons       |           6,531,841 |            247 |   ~1.6× slower   |
+| bmi4  | Garvelink            |           2,250,043 |            647 |   ~4.8× slower   |
+| bmi2  | iban4j               |           1,801,759 |          1,156 |   ~6.0× slower   |
+
+Memory figures (B/op) from JMH `gc.alloc.rate.norm` profiler.
 
 ### Key Takeaways
 
 **iban-commons is consistently fastest** across both valid and invalid input.
-Its rejection path is actually *faster* than its accept path (~12 M ops/s vs. ~7.2 M ops/s),
+Its rejection path is actually *faster* than its accept path (~10.7 M ops/s vs. ~5.6 M ops/s),
 because many invalid IBANs are rejected early by length or country-code checks before the
 full Mod-97 computation is reached.
 
-**Memory allocation is dramatically lower** than all competing libraries — just ~48 B/op on
-the accept path and ~40 B/op on the rejection path. The ASCII-math approach for Modulo 97
-avoids the intermediate `String` and `BigInteger` allocations that drive up B/op figures in
-`iban4j` (>1,340 B/op valid, >1,099 B/op invalid) and Garvelink (>1,063 B/op valid).
+**Memory allocation is effectively zero** — the `char[]`-based validation pipeline introduced in 1.8.5
+eliminates all transient heap allocation (< 0.001 B/op measured). All competing libraries allocate
+between 154 B/op (jbanking, rejection path) and 1,133 B/op (iban4j, valid path).
 
-**jbanking** is the strongest new challenger, ranking second on both paths (~6.1 M ops/s valid,
-~10.1 M ops/s invalid) at a moderate memory cost (~255 B/op valid, ~153 B/op invalid).
+**jbanking** is the strongest challenger, ranking second on both paths (~4.3 M ops/s valid,
+~7.9 M ops/s invalid) at a moderate memory cost (~298 B/op valid, ~154 B/op invalid).
 
-**Apache Commons** remains competitive on the rejection path (~9.9 M ops/s) because its
-regex can short-circuit on structural failures before evaluating the full checksum. On the
-valid path it ranks third (~5.2 M ops/s), just behind jbanking.
+**Apache Commons** ranks third on both paths (~3.2 M ops/s valid, ~6.5 M ops/s invalid).
+Its regex can short-circuit on structural failures, keeping its rejection performance competitive.
 
 **iban4j and Garvelink** both incur significant allocation on the rejection path
 because their exception-based API constructs full exception objects even when
 `-XX:-StackTraceInThrowable` eliminates the stack trace overhead.
+
+> **Note:** Results from the previous snapshot (2026-04-09, Generational ZGC, 3 forks × 10 iter × 2 s)
+> are not directly comparable to the current figures due to the GC configuration change (ParallelGC)
+> and the near-zero allocation improvements introduced in iban-commons 1.8.5.
