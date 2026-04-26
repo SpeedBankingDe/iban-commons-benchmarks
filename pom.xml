@@ -74,7 +74,7 @@
         <jmhMainClass>org.openjdk.jmh.Main</jmhMainClass>
         <dep.jmh.version>1.37</dep.jmh.version>
 
-        <dep.iban-commons.version>1.8.5-SNAPSHOT</dep.iban-commons.version>
+        <dep.iban-commons.version>1.8.6-SNAPSHOT</dep.iban-commons.version>
         <dep.iban4j.version>3.2.13-RELEASE</dep.iban4j.version> <!-- includes NCD -->
         <dep.apache-commons-validator.version>1.10.1</dep.apache-commons-validator.version>
         <dep.garvelink-iban.version>1.16.0</dep.garvelink-iban.version>

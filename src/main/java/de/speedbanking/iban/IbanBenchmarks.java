@@ -1,7 +1,5 @@
 package de.speedbanking.iban;
 
-import de.speedbanking.util.Iso3166Alpha2;
-
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
 
@@ -322,112 +320,14 @@ public final class IbanBenchmarks {
     @State(Scope.Benchmark)
     public static class InvalidState extends BaseState {
 
-        /** Minimum required IBAN length: country code (2) + check digits (2). */
-        private static final int MIN_IBAN_BASE_LENGTH = de.speedbanking.iban.IbanRegistry.MIN_IBAN_BASE_LENGTH;
-
-        /** Index of the first IBAN check digit within the full IBAN string (position 3, zero-based index 2). */
-        private static final int INDEX_CHECK_DIGIT1   = de.speedbanking.iban.IbanRegistry.INDEX_CHECK_DIGIT1;
-
-        /** Index of the second IBAN check digit within the full IBAN string (position 4, zero-based index 3). */
-        private static final int INDEX_CHECK_DIGIT2   = de.speedbanking.iban.IbanRegistry.INDEX_CHECK_DIGIT2;
-
-        /** Start index of the Basic Bank Account Number (BBAN) within the IBAN string (position 5, zero-based index 4). */
-        private static final int INDEX_BBAN           = de.speedbanking.iban.IbanRegistry.INDEX_BBAN;
-
         /**
          * Corrupts the generated IBAN dataset so that every entry fails validation.
-         * <p>
-         * For each IBAN, {@link #sabotageIban(StringBuilder)} is called repeatedly
-         * until {@link de.speedbanking.iban.Iban#isValid(String)} returns {@code false},
-         * ensuring no accidentally still-valid entry remains in the dataset.
          */
         @Override
         protected void setupDetail() {
             for (int i = 0; i < ibans.length; i++) {
-                StringBuilder sb = new StringBuilder(ibans[i]);
-
-                while (de.speedbanking.iban.Iban.isValid(sabotageIban(sb))) {
-                    // sabotageIban mutates sb in-place; repeat until validation fails
-                    continue;
-                }
-
-                ibans[i] = sb.toString();
+                ibans[i] = RandomIban.invalidString(ibans[i], random);
             }
-        }
-
-        /**
-         * Corrupts the given IBAN using a randomly selected sabotage strategy.
-         * <p>
-         * The method modifies the {@link StringBuilder} <em>in-place</em> and returns it.
-         * Six strategies are applied with equal probability:
-         * <ol>
-         *   <li><strong>Tamper check digit</strong> – one of the two check digits (position 3 or 4)
-         *       is incremented by 1 (wrapping: {@code '9'} → {@code '0'}) to trigger a Mod-97
-         *       checksum failure.</li>
-         *   <li><strong>Invalid country code</strong> – the first two characters are replaced with
-         *       {@code "XY"}, a non-registered ISO 3166 Alpha-2 code.</li>
-         *   <li><strong>Mismatched ISO code</strong> – the first two characters are replaced with a
-         *       valid but randomly chosen {@link Iso3166Alpha2} code that does not match the
-         *       existing BBAN format.</li>
-         *   <li><strong>Structural violation in BBAN</strong> – a letter ({@code 'A'}) is injected
-         *       at a random position within the BBAN section to break the expected character
-         *       pattern.</li>
-         *   <li><strong>Transposition error</strong> – two adjacent characters are swapped,
-         *       simulating a classic human keying mistake.</li>
-         *   <li><strong>Illegal length</strong> – the string is truncated to below
-         *       {@link #MIN_IBAN_BASE_LENGTH}, making it structurally invalid.</li>
-         * </ol>
-         *
-         * @param iban the IBAN string to sabotage as a {@link StringBuilder};
-         *             modified in-place
-         * @return the same {@link StringBuilder} instance after mutation
-         * @throws IllegalStateException if an unhandled strategy index is encountered
-         *                               (should never occur in practice)
-         */
-        StringBuilder sabotageIban(StringBuilder iban) {
-            switch (random.nextInt(6)) {
-                case 0 -> {
-                    // increment one check digit (position 3 or 4) to trigger a Mod-97 failure
-                    int cdIdx = random.nextBoolean() ? INDEX_CHECK_DIGIT1 : INDEX_CHECK_DIGIT2;
-                    char c = iban.charAt(cdIdx);
-                    iban.setCharAt(cdIdx, c == '9' ? '0' : (char) (c + 1));
-                }
-                case 1 -> {
-                    // replace country code with non-existent "XY"
-                    iban.setCharAt(0, 'X');
-                    iban.setCharAt(1, 'Y');
-                }
-                case 2 -> {
-                    // replace country code with a valid but mismatched ISO code
-                    Iso3166Alpha2[] countries = de.speedbanking.util.Iso3166Alpha2.values();
-                    String randomIso = countries[random.nextInt(countries.length)].name();
-                    iban.setCharAt(0, randomIso.charAt(0));
-                    iban.setCharAt(1, randomIso.charAt(1));
-                }
-                case 3 -> {
-                    // inject a letter into the numeric BBAN section to cause a structural violation
-                    if (iban.length() > INDEX_BBAN) {
-                        int pos = INDEX_BBAN
-                            + random.nextInt(iban.length() - INDEX_BBAN);
-                        iban.setCharAt(pos, 'A');
-                    }
-                }
-                case 4 -> {
-                    // classic transposition: swap two adjacent characters
-                    int p = random.nextInt(iban.length() - 1);
-                    char tmp = iban.charAt(p);
-                    iban.setCharAt(p, iban.charAt(p + 1));
-                    iban.setCharAt(p + 1, tmp);
-                }
-                case 5 -> {
-                    // truncate below minimum length to produce a structurally invalid IBAN
-                    if (iban.length() > MIN_IBAN_BASE_LENGTH) {
-                        iban.setLength(MIN_IBAN_BASE_LENGTH - 1);
-                    }
-                }
-                default -> throw new IllegalStateException("Unexpected strategy");
-            }
-            return iban;
         }
     }
 
