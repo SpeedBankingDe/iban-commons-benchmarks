@@ -24,6 +24,12 @@ import java.util.concurrent.TimeUnit;
  * (e.g. {@code iban4j}). It isolates pure algorithm performance, but does <em>not</em>
  * reflect production behaviour where stack traces are enabled.
  * <p>
+ * <strong>Note on {@code -XX:+UseSerialGC}:</strong> SerialGC has zero background threads
+ * and therefore introduces no GC-induced CPU interference with benchmark threads. This
+ * minimises measurement noise in {@code gc.alloc.rate.norm} and is the recommended GC
+ * for microbenchmarks. ZGC/G1 are better suited for low-latency production workloads, not
+ * for benchmarking.
+ * <p>
  * To execute this benchmark suite using Maven:
  * <pre>
  * mvn clean package
@@ -53,10 +59,34 @@ public final class IbanBenchmarks {
     }
 
     /**
-     * Benchmarks the validation throughput of the {@code speedbanking iban-commons} library
-     * against valid IBANs.
+     * Common JVM arguments applied to every fork in both benchmark groups.
+     * <p>
+     * Defined once here to avoid divergence between {@link ValidBenchmarks} and
+     * {@link InvalidBenchmarks}. Both groups reference this constant via the
+     * {@link Fork#jvmArgs()} attribute.
+     * <ul>
+     *   <li>{@code -Xms2G -Xmx2G}: fixed heap – eliminates heap-resize pauses.</li>
+     *   <li>{@code -XX:+AlwaysPreTouch}: pre-faults all heap pages at JVM start so
+     *       that OS page faults do not skew early measurement iterations.</li>
+     *   <li>{@code -XX:+UseSerialGC}: zero background GC threads; no CPU competition
+     *       with benchmark threads; deterministic, low-noise stop-the-world behaviour.</li>
+     *   <li>{@code -XX:-StackTraceInThrowable}: suppresses stack-trace generation for
+     *       libraries that use exceptions for control flow (e.g. {@code iban4j}), isolating
+     *       pure algorithmic cost. Not representative of production behaviour.</li>
+     * </ul>
+     */
+    static final String[] FORK_JVM_ARGS = {
+        "-Xms2G",
+        "-Xmx2G",
+        "-XX:+AlwaysPreTouch",
+        "-XX:+UseSerialGC",
+        "-XX:-StackTraceInThrowable"
+    };
+
+    /**
+     * Benchmarks the validation throughput of the {@code speedbanking iban-commons} library.
      *
-     * @param state JMH state holding the valid IBAN dataset
+     * @param state JMH state holding the IBAN dataset
      * @param bh    {@link Blackhole} to prevent dead-code elimination by the JIT compiler
      */
     static <T extends BaseState> void run_IbanCommons(T state, Blackhole bh) {
@@ -66,9 +96,9 @@ public final class IbanBenchmarks {
     }
 
     /**
-     * Benchmarks the validation throughput of the {@code iban4j} library against valid IBANs.
+     * Benchmarks the validation throughput of the {@code iban4j} library.
      *
-     * @param state JMH state holding the valid IBAN dataset
+     * @param state JMH state holding the IBAN dataset
      * @param bh    {@link Blackhole} to prevent dead-code elimination by the JIT compiler
      */
     static <T extends BaseState> void run_Iban4j(T state, Blackhole bh) {
@@ -78,13 +108,12 @@ public final class IbanBenchmarks {
     }
 
     /**
-     * Benchmarks the validation throughput of the {@code Apache Commons Validator} library
-     * against valid IBANs.
+     * Benchmarks the validation throughput of the {@code Apache Commons Validator} library.
      * <p>
      * The Apache validator uses regex-based IBAN validation and is obtained as a singleton
      * via {@link org.apache.commons.validator.routines.IBANValidator#getInstance()}.
      *
-     * @param state JMH state holding the valid IBAN dataset
+     * @param state JMH state holding the IBAN dataset
      * @param bh    {@link Blackhole} to prevent dead-code elimination by the JIT compiler
      */
     static <T extends BaseState> void run_Apache(T state, Blackhole bh) {
@@ -94,13 +123,13 @@ public final class IbanBenchmarks {
     }
 
     /**
-     * Benchmarks the rejection throughput of the {@code garvelink iban} library
-     * against invalid IBANs.
+     * Benchmarks the throughput of the {@code garvelink iban} library.
      * <p>
-     * Since {@code IBAN.parse()} throws an exception for invalid input, the exception is
-     * intentionally swallowed here – the rejection path is the dominant path in this benchmark.
+     * {@code IBAN.parse()} throws an exception for invalid input; the exception is
+     * intentionally swallowed – the rejection path is the dominant path in the invalid
+     * benchmark, and the happy path dominates in the valid benchmark.
      *
-     * @param state JMH state holding the invalid IBAN dataset
+     * @param state JMH state holding the IBAN dataset
      * @param bh    {@link Blackhole} to prevent dead-code elimination by the JIT compiler
      */
     static <T extends BaseState> void run_Garvelink(T state, Blackhole bh) {
@@ -114,10 +143,9 @@ public final class IbanBenchmarks {
     }
 
     /**
-     * Benchmarks the validation throughput of the {@code marcwrobel jbanking} library
-     * against valid IBANs.
+     * Benchmarks the validation throughput of the {@code marcwrobel jbanking} library.
      *
-     * @param state JMH state holding the valid IBAN dataset
+     * @param state JMH state holding the IBAN dataset
      * @param bh    {@link Blackhole} to prevent dead-code elimination by the JIT compiler
      */
     static <T extends BaseState> void run_JBanking(T state, Blackhole bh) {
@@ -129,7 +157,7 @@ public final class IbanBenchmarks {
     /**
      * Shared base state for all benchmark groups.
      * <p>
-     * Handles generation of the IBAN dataset and initialization of third-party validators.
+     * Handles generation of the IBAN dataset and initialisation of third-party validators.
      * Subclasses may perform additional setup by overriding {@link #setupDetail()}.
      */
     public abstract static class BaseState {
@@ -138,7 +166,7 @@ public final class IbanBenchmarks {
          * Thread-local random number generator for contention-free parallel data generation.
          * <p>
          * {@link ThreadLocalRandom} is preferred over {@link java.util.Random} because it
-         * requires no synchronization and therefore introduces no artificial contention points
+         * requires no synchronisation and therefore introduces no artificial contention points
          * in JMH benchmarks.
          */
         final ThreadLocalRandom random     = ThreadLocalRandom.current();
@@ -148,9 +176,8 @@ public final class IbanBenchmarks {
         /**
          * The generated IBAN array iterated by all benchmark methods.
          * <p>
-         * Each entry is either a compact IBAN (e.g. {@code DE89370400440532013000})
-         * or a formatted IBAN with spaces (e.g. {@code DE89 3704 0044 0532 0130 00}),
-         * randomly mixed at a 1:1 ratio to cover both common input formats.
+         * Each entry is stored in its compact, unformatted form
+         * (e.g. {@code DE89370400440532013000}).
          */
         String[] ibans;
 
@@ -168,14 +195,15 @@ public final class IbanBenchmarks {
         }
 
         /**
-         * Initializes the shared benchmark state at trial level.
+         * Initialises the shared benchmark state at trial level.
          * <p>
          * The following steps are performed in order:
          * <ol>
          *   <li>Generate {@value IbanBenchmarks#TARGET_SIZE} random IBANs.</li>
          *   <li>Obtain the Apache Commons validator singleton.</li>
-         *   <li>Disable NCD features ({@code NCD_CALCULATE} and {@code NCD_VALIDATE})
-         *       to establish a baseline against standard ISO 7064 Mod 97-10 validation.</li>
+         *   <li>Reset {@link IbanConfig} to its default to establish a pure ISO 7064
+         *       Mod 97-10 baseline (disables NCD features, space formatting, and
+         *       lowercase support).</li>
          *   <li>Invoke {@link #setupDetail()} for subclass-specific preparations.</li>
          * </ol>
          */
@@ -185,33 +213,29 @@ public final class IbanBenchmarks {
 
             apacheValidator = org.apache.commons.validator.routines.IBANValidator.getInstance();
 
-            // disable space-formatting, lowercase support, and NCD features for a pure ISO 7064 Mod 97-10 baseline comparison
+            // disable space-formatting, lowercase support, and NCD features for a pure
+            // ISO 7064 Mod 97-10 baseline comparison
             IbanConfig.reset(IbanConfig.DEFAULT);
 
             setupDetail();
 
-            System.out.println("INFO: " + getClass().getSimpleName() + " dataset ready (size: " + TARGET_SIZE + ")");
+            System.out.println("INFO: " + getClass().getSimpleName() + " dataset ready (size: " + targetSize + ")");
         }
 
         /**
          * Optional hook for subclass-specific setup logic.
          * <p>
-         * Called by {@link #setup()} after common initialization is complete.
+         * Called by {@link #setup()} after common initialisation is complete.
          * The default implementation is a no-op; subclasses may override this method
          * to, for example, corrupt the dataset for rejection benchmarks.
          */
         protected void setupDetail() {}
 
         /**
-         * Generates a mixed set of random IBANs based on {@link IbanRegistry}.
-         * <p>
-         * For each entry, it is randomly decided whether the IBAN is stored in its
-         * compact form ({@link Iban#toString()}) or formatted with spaces
-         * ({@link Iban#toFormattedString()}), ensuring the dataset covers both
-         * common input formats in equal proportion.
+         * Generates an array of random, compact IBANs via {@link RandomIban}.
          *
          * @param size number of IBANs to generate
-         * @return array of length {@code size} containing random IBAN strings
+         * @return array of length {@code size} containing compact IBAN strings
          */
         final String[] generateIbans(int size) {
             String[] result = new String[size];
@@ -301,9 +325,6 @@ public final class IbanBenchmarks {
 
     /**
      * JMH state holding a dataset of exclusively <em>valid</em> IBANs.
-     * <p>
-     * The dataset is generated by {@link BaseState#setup()} and contains compact
-     * and formatted IBANs in random mixture.
      */
     @State(Scope.Benchmark)
     public static class ValidState extends BaseState {
@@ -313,9 +334,8 @@ public final class IbanBenchmarks {
      * JMH state holding a dataset of exclusively <em>invalid</em> IBANs.
      * <p>
      * Starting from an initially valid dataset, all entries are corrupted in
-     * {@link #setupDetail()} via {@link #sabotageIban(StringBuilder)} until
-     * {@link de.speedbanking.iban.Iban#isValid(String)} returns {@code false}
-     * for every entry. This allows measuring the pure rejection overhead of each library.
+     * {@link #setupDetail()} so that every entry fails validation. This allows
+     * measuring the pure rejection overhead of each library.
      */
     @State(Scope.Benchmark)
     public static class InvalidState extends BaseState {
@@ -335,19 +355,17 @@ public final class IbanBenchmarks {
      * Benchmark group for validating <em>valid</em> IBANs.
      * <p>
      * All methods measure throughput ({@link Mode#Throughput}) in operations per second
-     * over a dataset of {@value IbanBenchmarks#TARGET_SIZE} valid IBANs. Each fork starts
-     * in a fresh JVM process; generational ZGC minimizes GC-induced measurement artifacts.
+     * over a dataset of {@value IbanBenchmarks#TARGET_SIZE} valid IBANs.
      */
     @BenchmarkMode(Mode.Throughput)
     @OutputTimeUnit(TimeUnit.SECONDS)
     @Warmup(iterations = 5, time = 2)
     @Measurement(iterations = 5, time = 2)
-    @Fork(value = 2, jvmArgs = {
+    @Fork(value = 3, jvmArgs = {
         "-Xms2G",
         "-Xmx2G",
-        // "-XX:+UseZGC",
-        // "-XX:+ZGenerational",
-        "-XX:+UseParallelGC",
+        "-XX:+AlwaysPreTouch",
+        "-XX:+UseSerialGC",
         "-XX:-StackTraceInThrowable"
     })
     public static class ValidBenchmarks {
@@ -370,17 +388,6 @@ public final class IbanBenchmarks {
             run_Apache(state, bh);
         }
 
-        /**
-         * Benchmarks the validation throughput of the {@code garvelink iban} library
-         * against valid IBANs.
-         * <p>
-         * The library uses an object-oriented parsing approach: {@code IBAN.parse()} throws
-         * an exception for invalid input. Since the dataset contains only valid IBANs,
-         * the {@code catch} block is present purely for completeness.
-         *
-         * @param state JMH state holding the valid IBAN dataset
-         * @param bh    {@link Blackhole} to prevent dead-code elimination by the JIT compiler
-         */
         @Benchmark
         @OperationsPerInvocation(TARGET_SIZE)
         public void bmv4_Garvelink(ValidState state, Blackhole bh) {
@@ -406,13 +413,12 @@ public final class IbanBenchmarks {
     @BenchmarkMode(Mode.Throughput)
     @OutputTimeUnit(TimeUnit.SECONDS)
     @Warmup(iterations = 5, time = 2)
-    @Measurement(iterations = 4, time = 2)
-    @Fork(value = 2, jvmArgs = {
+    @Measurement(iterations = 5, time = 2)
+    @Fork(value = 3, jvmArgs = {
         "-Xms2G",
         "-Xmx2G",
-        // "-XX:+UseZGC",
-        // "-XX:+ZGenerational",
-        "-XX:+UseParallelGC",
+        "-XX:+AlwaysPreTouch",
+        "-XX:+UseSerialGC",
         "-XX:-StackTraceInThrowable"
     })
     public static class InvalidBenchmarks {
@@ -445,16 +451,6 @@ public final class IbanBenchmarks {
         @OperationsPerInvocation(TARGET_SIZE)
         public void bmi5_JBanking(InvalidState state, Blackhole bh) {
             run_JBanking(state, bh);
-        }
-    }
-
-    public static void main(String[] args) {
-        BaseState validState = new ValidState().withTargetSize(100);
-        validState.setup();
-
-        for (String iban : validState.ibans) {
-            boolean valid = fr.marcwrobel.jbanking.iban.Iban.isValid(iban);
-            (valid ? System.out : System.err).printf("IBAN is %s : %s%n", valid ? "valid  " : "INVALID", iban);
         }
     }
 
