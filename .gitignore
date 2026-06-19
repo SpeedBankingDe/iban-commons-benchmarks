@@ -10,7 +10,6 @@
 *.iml
 .checkstyle
 .idea
-.mvn
 .factorypath
 .~lock*
 *.kate-swp
