@@ -33,7 +33,7 @@ if not exist "%JFR_DIR%" mkdir "%JFR_DIR%"
 :: ---------------------------------------------------------------------------
 :: System Information
 :: ---------------------------------------------------------------------------
-:: Note: JVM args are defined in @Fork(jvmArgs = {...}) in IbanBenchmarks.java.
+:: Note: JVM args are defined in @Fork(jvmArgs = {...}) in BicBenchmarks.java.
 ::       The launcher below uses only a minimal heap to host the JMH runner process;
 ::       each benchmark fork starts its own JVM with the annotation-specified args.
 :: ---------------------------------------------------------------------------
@@ -50,16 +50,10 @@ type "%LOG_FILE%"
 :: ---------------------------------------------------------------------------
 :: Run benchmarks
 :: ---------------------------------------------------------------------------
-:: The launcher JVM only drives the JMH harness. All performance-relevant JVM
-:: flags are declared in IbanBenchmarks.java via @Fork(jvmArgs = {...}) and
-:: apply to the child processes that actually run the benchmarks.
-::
-:: Development-only overrides (uncomment to iterate faster; do not commit enabled):
-::   -f 1 -wi 3 -w 1s -i 3 -r 1s
-:: ---------------------------------------------------------------------------
-echo Running benchmarks...
+echo Running BIC benchmarks...
 
 java -jar "%JAR_PATH%" ^
+  BicBenchmarks ^
   -prof gc ^
   -rf json -rff "%JSON_FILE%" ^
   | powershell -NoProfile -Command "$input | Tee-Object -FilePath '%LOG_FILE%' -Append"

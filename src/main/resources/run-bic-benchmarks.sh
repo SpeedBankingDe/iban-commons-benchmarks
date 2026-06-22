@@ -1,5 +1,5 @@
 #!/bin/bash
-# run-benchmarks.sh - automated JMH benchmark run
+# run-bic-benchmarks.sh - automated JMH benchmark run for BICs
 # version: ${project.version}
 set -euo pipefail
 
@@ -41,7 +41,7 @@ mkdir -p "$JFR_DIR"
 # ---------------------------------------------------------------------------
 # System Information
 # ---------------------------------------------------------------------------
-# Note: JVM args are defined in @Fork(jvmArgs = {...}) in IbanBenchmarks.java.
+# Note: JVM args are defined in @Fork(jvmArgs = {...}) in BicBenchmarks.java.
 #       The launcher below uses only a minimal heap to host the JMH runner process;
 #       each benchmark fork starts its own JVM with the annotation-specified args.
 # ---------------------------------------------------------------------------
@@ -68,6 +68,7 @@ mkdir -p "$JFR_DIR"
 # ---------------------------------------------------------------------------
 JAVA_CMD=(java
     -jar "$JAR_PATH"
+    BicBenchmarks
     -prof gc
     -rf json
     -rff "$JSON_FILE")
@@ -77,7 +78,7 @@ JAVA_CMD=(java
 # JFR profiling (uncomment to record; produces large files):
 # JAVA_CMD+=(-prof "jfr:dir=$JFR_DIR;configName=profile")
 
-echo "Starting benchmarks..." | tee -a "$LOG_FILE"
+echo "Starting IBAN benchmarks..." | tee -a "$LOG_FILE"
 
 if [ "$USE_TASKSET" = true ]; then
     echo "Running with taskset -c 0 (SerialGC has no background threads)" | tee -a "$LOG_FILE"
