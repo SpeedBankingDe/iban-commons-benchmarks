@@ -63,6 +63,20 @@
         <tag></tag>
     </scm>
 
+    <repositories>
+        <repository>
+            <id>ossrh-snapshots</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
+
     <issueManagement>
         <system>Github</system>
         <url>${project.url}/issues</url>
@@ -74,11 +88,11 @@
         <jmhMainClass>org.openjdk.jmh.Main</jmhMainClass>
         <dep.jmh.version>1.37</dep.jmh.version>
 
-        <dep.iban-commons.version>1.8.8-SNAPSHOT</dep.iban-commons.version>
+        <dep.iban-commons.version>1.8.9-SNAPSHOT</dep.iban-commons.version>
         <dep.iban4j.version>3.2.13-RELEASE</dep.iban4j.version> <!-- includes NCD -->
         <dep.apache-commons-validator.version>1.10.1</dep.apache-commons-validator.version>
-        <dep.garvelink-iban.version>1.16.0</dep.garvelink-iban.version>
-        <dep.marcwrobel-jbanking.version>4.3.0</dep.marcwrobel-jbanking.version>
+        <dep.garvelink-iban.version>1.17.0</dep.garvelink-iban.version>
+        <dep.marcwrobel-jbanking.version>4.4.0-SNAPSHOT</dep.marcwrobel-jbanking.version>
 
         <developer1Id>spannm</developer1Id>
         <developer1Name>Markus Spann</developer1Name>
@@ -98,7 +112,7 @@
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss.SSS</maven.build.timestamp.format>
 
         <check.checkstyle.ruleset>src/test/resources/team/checkstyle-rules.xml</check.checkstyle.ruleset>
-        <dep.checkstyle.version>13.6.0</dep.checkstyle.version>
+        <dep.checkstyle.version>13.7.0</dep.checkstyle.version>
 
         <!-- Plugin versions (alphabetically) -->
         <dep.plugin.antrun>3.2.0</dep.plugin.antrun>
