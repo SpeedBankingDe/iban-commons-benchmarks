@@ -78,12 +78,15 @@
     </repositories>
 
     <issueManagement>
-        <system>Github</system>
+        <system>GitHub</system>
         <url>${project.url}/issues</url>
     </issueManagement>
 
     <properties>
-        <javaVersion>17</javaVersion>
+        <releaseJavaVersion>17</releaseJavaVersion>
+        <buildJavaVersion>21</buildJavaVersion>
+
+        <project.rootDirectory>${maven.multiModuleProjectDirectory}</project.rootDirectory>
 
         <jmhMainClass>org.openjdk.jmh.Main</jmhMainClass>
         <dep.jmh.version>1.37</dep.jmh.version>
@@ -111,8 +114,8 @@
 
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss.SSS</maven.build.timestamp.format>
 
-        <check.checkstyle.ruleset>src/test/resources/team/checkstyle-rules.xml</check.checkstyle.ruleset>
-        <dep.checkstyle.version>13.7.0</dep.checkstyle.version>
+        <dep.checkstyle.version>13.11.0</dep.checkstyle.version>
+        <check.checkstyle.ruleset>${project.rootDirectory}/build/checkstyle-rules.xml</check.checkstyle.ruleset>
 
         <!-- Plugin versions (alphabetically) -->
         <dep.plugin.antrun>3.2.0</dep.plugin.antrun>
@@ -213,6 +216,7 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>${dep.plugin.compiler.version}</version>
                     <configuration>
+                        <release>${releaseJavaVersion}</release>
                         <debug>true</debug>
                         <debuglevel>lines,vars,source</debuglevel>
                         <showWarnings>true</showWarnings>
@@ -242,32 +246,17 @@
                             <manifest>
                                 <addClasspath>false</addClasspath>
                                 <addDefaultEntries>true</addDefaultEntries>
-                                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>  <!-- Implementation-Title/Version/Vendor -->
                                 <addDefaultSpecificationEntries>false</addDefaultSpecificationEntries>
-                                <addBuildEnvironmentEntries>true</addBuildEnvironmentEntries>
+                                <addBuildEnvironmentEntries>true</addBuildEnvironmentEntries>  <!-- Build-Jdk, Build-Os, Build-Tool -->
                             </manifest>
 
                             <manifestEntries>
                                 <Build-Time>${maven.build.timestamp}</Build-Time>
-                                <Project-Java-Version>${javaVersion}</Project-Java-Version>
-
-                                <Creation-Java-Vendor>${java.vendor}</Creation-Java-Vendor>
-                                <Creation-Java-Version>${java.version}</Creation-Java-Version>
-                                <Creation-Java-Runtime-Name>${java.runtime.name}</Creation-Java-Runtime-Name>
-                                <Creation-Java-Runtime-Version>${java.runtime.version}</Creation-Java-Runtime-Version>
-
-                                <Creation-Os-Name>${os.name}</Creation-Os-Name>
-                                <Creation-Os-Arch>${os.arch}</Creation-Os-Arch>
-                                <Creation-Os-Version>${os.version}</Creation-Os-Version>
-                                <Creation-User>${developer1Id} (${developer1Name}), ${developer2Id} (${developer2Name})</Creation-User>
-                                <Creation-Time>${maven.build.timestamp}</Creation-Time>
-
-                                <Project-Description>${project.description}</Project-Description>
+                                <Project-Java-Version>${releaseJavaVersion}</Project-Java-Version>
                                 <Project-Url>${project.url}</Project-Url>
                                 <Project-Inception-Year>${project.inceptionYear}</Project-Inception-Year>
-
-                                <Organization-Name>${project.organization.name}</Organization-Name>
-                                <Organization-Url>${project.organization.url}</Organization-Url>
+                                <Creation-User>${developer1Id} (${developer1Name}), ${developer2Id} (${developer2Name})</Creation-User>
                             </manifestEntries>
                         </archive>
                         <excludes>
@@ -320,7 +309,7 @@
                                 <version>[3.9.0,)</version>
                             </requireMavenVersion>
                             <requireJavaVersion>
-                                <version>[${javaVersion},)</version>
+                                <version>[${buildJavaVersion},)</version>
                             </requireJavaVersion>
 
                             <requirePluginVersions>
@@ -333,8 +322,7 @@
                                     org.apache.maven.plugins:maven-deploy-plugin,
                                     org.apache.maven.plugins:maven-install-plugin,
                                     org.apache.maven.plugins:maven-resources-plugin,
-                                    org.apache.maven.plugins:maven-site-plugin,
-                                    org.apache.maven.plugins:maven-surefire-plugin
+                                    org.apache.maven.plugins:maven-site-plugin
                                 </unCheckedPluginList>
                             </requirePluginVersions>
                         </rules>
