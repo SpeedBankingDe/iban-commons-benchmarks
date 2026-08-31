@@ -76,7 +76,7 @@ public final class BicBenchmarks {
         boolean profileMode = true; // set to false for a normal non-profiled trial run in the IDE
 
         ChainedOptionsBuilder builder = new OptionsBuilder()
-            .include(BicBenchmarks.class.getSimpleName() + ".*IbanCommons");
+            .include(BicBenchmarks.class.getSimpleName() + ".*");
 
         if (profileMode) {
             System.out.println("INFO: Running in IDE Profiler Mode (Forks = 0, shortened iterations)");
@@ -96,27 +96,17 @@ public final class BicBenchmarks {
     /**
      * Common JVM arguments applied to every fork in both benchmark groups.
      * <p>
-     * Defined once here to avoid divergence between {@link ValidBenchmarks} and
-     * {@link InvalidBenchmarks}. Both groups reference this constant via the
-     * {@link Fork#jvmArgs()} attribute.
-     * <ul>
-     *   <li>{@code -Xms2G -Xmx2G}: fixed heap – eliminates heap-resize pauses.</li>
-     *   <li>{@code -XX:+AlwaysPreTouch}: pre-faults all heap pages at JVM start so
-     *       that OS page faults do not skew early measurement iterations.</li>
-     *   <li>{@code -XX:+UseSerialGC}: zero background GC threads; no CPU competition
-     *       with benchmark threads; deterministic, low-noise stop-the-world behaviour.</li>
-     *   <li>{@code -XX:-StackTraceInThrowable}: suppresses stack-trace generation for
-     *       libraries that use exceptions for control flow (e.g. {@code iban4j}), isolating
-     *       pure algorithmic cost. Not representative of production behaviour.</li>
-     * </ul>
+     * Declared as individual {@code String} constants – rather than a single array constant –
+     * because Java annotation attributes only accept compile-time constant expressions, and an
+     * array-typed field does not qualify; each constant below, however, does, so every
+     * {@link Fork#jvmArgs()} attribute in this class references these directly instead of
+     * duplicating the literal values.
      */
-    static final String[] FORK_JVM_ARGS = {
-        "-Xms2G",
-        "-Xmx2G",
-        "-XX:+AlwaysPreTouch",
-        "-XX:+UseSerialGC",
-        "-XX:-StackTraceInThrowable"
-    };
+    static final String JVM_ARG_HEAP_MIN         = "-Xms2G";
+    static final String JVM_ARG_HEAP_MAX         = "-Xmx2G";
+    static final String JVM_ARG_ALWAYS_PRE_TOUCH = "-XX:+AlwaysPreTouch";
+    static final String JVM_ARG_SERIAL_GC        = "-XX:+UseSerialGC";
+    static final String JVM_ARG_NO_STACKTRACE    = "-XX:-StackTraceInThrowable";
 
     /**
      * Benchmarks the validation throughput of the {@code speedbanking iban-commons} library.
@@ -188,11 +178,6 @@ public final class BicBenchmarks {
          * Each entry is stored in its compact, unformatted form (8 or 11 characters).
          */
         String[] bics;
-
-        BaseState withTargetSize(int targetSize) {
-            this.targetSize = targetSize;
-            return this;
-        }
 
         /**
          * Initialises the shared benchmark state at trial level.
@@ -318,11 +303,11 @@ public final class BicBenchmarks {
     @Warmup(iterations = 5, time = 2)
     @Measurement(iterations = 5, time = 2)
     @Fork(value = 3, jvmArgs = {
-        "-Xms2G",
-        "-Xmx2G",
-        "-XX:+AlwaysPreTouch",
-        "-XX:+UseSerialGC",
-        "-XX:-StackTraceInThrowable"
+        JVM_ARG_HEAP_MIN,
+        JVM_ARG_HEAP_MAX,
+        JVM_ARG_ALWAYS_PRE_TOUCH,
+        JVM_ARG_SERIAL_GC,
+        JVM_ARG_NO_STACKTRACE
     })
     public static class ValidBenchmarks {
 
@@ -358,11 +343,11 @@ public final class BicBenchmarks {
     @Warmup(iterations = 5, time = 2)
     @Measurement(iterations = 5, time = 2)
     @Fork(value = 3, jvmArgs = {
-        "-Xms2G",
-        "-Xmx2G",
-        "-XX:+AlwaysPreTouch",
-        "-XX:+UseSerialGC",
-        "-XX:-StackTraceInThrowable"
+        JVM_ARG_HEAP_MIN,
+        JVM_ARG_HEAP_MAX,
+        JVM_ARG_ALWAYS_PRE_TOUCH,
+        JVM_ARG_SERIAL_GC,
+        JVM_ARG_NO_STACKTRACE
     })
     public static class InvalidBenchmarks {
 

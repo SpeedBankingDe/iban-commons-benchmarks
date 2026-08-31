@@ -60,7 +60,7 @@ mkdir -p "$JFR_DIR"
 # ---------------------------------------------------------------------------
 # The launcher JVM only drives the JMH harness. All performance-relevant JVM
 # flags (-XX:+UseSerialGC, -XX:+AlwaysPreTouch, heap size, etc.) are declared
-# in IbanBenchmarks.java via @Fork(jvmArgs = {...}) and apply to the child
+# in BicBenchmarks.java via @Fork(jvmArgs = {...}) and apply to the child
 # processes that actually run the benchmarks.
 #
 # Taskset pins both the launcher and (via fork inheritance) all child JVMs to
@@ -78,7 +78,7 @@ JAVA_CMD=(java
 # JFR profiling (uncomment to record; produces large files):
 # JAVA_CMD+=(-prof "jfr:dir=$JFR_DIR;configName=profile")
 
-echo "Starting IBAN benchmarks..." | tee -a "$LOG_FILE"
+echo "Starting BIC benchmarks..." | tee -a "$LOG_FILE"
 
 if [ "$USE_TASKSET" = true ]; then
     echo "Running with taskset -c 0 (SerialGC has no background threads)" | tee -a "$LOG_FILE"

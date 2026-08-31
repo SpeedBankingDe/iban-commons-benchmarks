@@ -2,6 +2,10 @@ package de.speedbanking.iban;
 
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
+import org.openjdk.jmh.runner.Runner;
+import org.openjdk.jmh.runner.options.ChainedOptionsBuilder;
+import org.openjdk.jmh.runner.options.Options;
+import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
@@ -14,6 +18,11 @@ import java.util.concurrent.TimeUnit;
  *   <li>{@code ValidBenchmarks} ({@code bmv}): Throughput on <em>valid</em> IBANs.</li>
  *   <li>{@code InvalidBenchmarks} ({@code bmi}): Throughput on <em>invalid</em> IBANs
  *       (rejection cost).</li>
+ *   <li>{@code BuilderBenchmarks} ({@code bmb}): Throughput of IBAN <em>object creation</em>
+ *       from bank code and account number components. Limited to libraries that expose a
+ *       component-based builder ({@code speedbanking iban-commons} and {@code iban4j});
+ *       {@code Apache Commons Validator}, {@code garvelink iban}, and {@code marcwrobel jbanking}
+ *       offer no equivalent construction API and are therefore excluded from this group.</li>
  * </ul>
  * <p>
  * Running both groups together gives a realistic picture of library performance across
@@ -59,29 +68,50 @@ public final class IbanBenchmarks {
     }
 
     /**
-     * Common JVM arguments applied to every fork in both benchmark groups.
+     * Standard entry point for executing or profiling the benchmarks directly from the IDE.
      * <p>
-     * Defined once here to avoid divergence between {@link ValidBenchmarks} and
-     * {@link InvalidBenchmarks}. Both groups reference this constant via the
-     * {@link Fork#jvmArgs()} attribute.
-     * <ul>
-     *   <li>{@code -Xms2G -Xmx2G}: fixed heap – eliminates heap-resize pauses.</li>
-     *   <li>{@code -XX:+AlwaysPreTouch}: pre-faults all heap pages at JVM start so
-     *       that OS page faults do not skew early measurement iterations.</li>
-     *   <li>{@code -XX:+UseSerialGC}: zero background GC threads; no CPU competition
-     *       with benchmark threads; deterministic, low-noise stop-the-world behaviour.</li>
-     *   <li>{@code -XX:-StackTraceInThrowable}: suppresses stack-trace generation for
-     *       libraries that use exceptions for control flow (e.g. {@code iban4j}), isolating
-     *       pure algorithmic cost. Not representative of production behaviour.</li>
-     * </ul>
+     * Detection of an active IDE profiler runner is based on systemic properties or can be
+     * toggled by modifying the boolean flag below. When profiling, forks are set to 0 to keep
+     * execution inside the IDE's monitored JVM.
+     *
+     * @param args command line arguments passed to the runner
+     * @throws Exception if the benchmark execution fails
      */
-    static final String[] FORK_JVM_ARGS = {
-        "-Xms2G",
-        "-Xmx2G",
-        "-XX:+AlwaysPreTouch",
-        "-XX:+UseSerialGC",
-        "-XX:-StackTraceInThrowable"
-    };
+    public static void main(String[] args) throws Exception {
+        boolean profileMode = true; // set to false for a normal non-profiled trial run in the IDE
+
+        ChainedOptionsBuilder builder = new OptionsBuilder()
+            .include(IbanBenchmarks.class.getSimpleName() + ".*");
+
+        if (profileMode) {
+            System.out.println("INFO: Running in IDE Profiler Mode (Forks = 0, shortened iterations)");
+            builder.forks(0)
+                   .warmupIterations(2)
+                   .measurementIterations(3);
+        } else {
+            builder.forks(1)
+                   .warmupIterations(5)
+                   .measurementIterations(5);
+        }
+
+        Options opt = builder.build();
+        new Runner(opt).run();
+    }
+
+    /**
+     * Common JVM arguments applied to every fork in all benchmark groups.
+     * <p>
+     * Declared as individual {@code String} constants – rather than a single array constant –
+     * because Java annotation attributes only accept compile-time constant expressions, and an
+     * array-typed field does not qualify; each constant below, however, does, so every
+     * {@link Fork#jvmArgs()} attribute in this class references these directly instead of
+     * duplicating the literal values.
+     */
+    static final String JVM_ARG_HEAP_MIN         = "-Xms2G";
+    static final String JVM_ARG_HEAP_MAX         = "-Xmx2G";
+    static final String JVM_ARG_ALWAYS_PRE_TOUCH = "-XX:+AlwaysPreTouch";
+    static final String JVM_ARG_SERIAL_GC        = "-XX:+UseSerialGC";
+    static final String JVM_ARG_NO_STACKTRACE    = "-XX:-StackTraceInThrowable";
 
     /**
      * Benchmarks the validation throughput of the {@code speedbanking iban-commons} library.
@@ -155,6 +185,42 @@ public final class IbanBenchmarks {
     }
 
     /**
+     * Benchmarks the object-creation throughput of the {@code speedbanking iban-commons} library,
+     * building a fresh {@link de.speedbanking.iban.Iban} from bank code and account number
+     * components for each entry of the dataset.
+     *
+     * @param state JMH state holding the bank code / account number dataset
+     * @param bh    {@link Blackhole} to prevent dead-code elimination by the JIT compiler
+     */
+    static void run_IbanCommons_Build(BuilderState state, Blackhole bh) {
+        for (int i = 0; i < state.bankCodes.length; i++) {
+            bh.consume(de.speedbanking.iban.IbanRegistry.DE
+                .<de.speedbanking.iban.IbanBuilder.StandardIbanBuilder>builder()
+                .bankCode(state.bankCodes[i])
+                .accountNumber(state.accountNumbers[i])
+                .build());
+        }
+    }
+
+    /**
+     * Benchmarks the object-creation throughput of the {@code iban4j} library, building a
+     * fresh {@link org.iban4j.Iban} from bank code and account number components for each
+     * entry of the dataset.
+     *
+     * @param state JMH state holding the bank code / account number dataset
+     * @param bh    {@link Blackhole} to prevent dead-code elimination by the JIT compiler
+     */
+    static void run_Iban4j_Build(BuilderState state, Blackhole bh) {
+        for (int i = 0; i < state.bankCodes.length; i++) {
+            bh.consume(new org.iban4j.Iban.Builder()
+                .countryCode(org.iban4j.CountryCode.DE)
+                .bankCode(state.bankCodes[i])
+                .accountNumber(state.accountNumbers[i])
+                .build());
+        }
+    }
+
+    /**
      * Shared base state for all benchmark groups.
      * <p>
      * Handles generation of the IBAN dataset and initialisation of third-party validators.
@@ -188,11 +254,6 @@ public final class IbanBenchmarks {
          * within a trial to avoid repeated instantiation overhead.
          */
         org.apache.commons.validator.routines.IBANValidator apacheValidator;
-
-        BaseState withTargetSize(int targetSize) {
-            this.targetSize = targetSize;
-            return this;
-        }
 
         /**
          * Initialises the shared benchmark state at trial level.
@@ -247,80 +308,6 @@ public final class IbanBenchmarks {
 
             return result;
         }
-
-        /**
-         * Swaps two characters at distinct, randomly chosen positions within the given
-         * character sequence.
-         * <p>
-         * The two indices are selected so that every unordered pair of positions has equal
-         * probability of being chosen (Fisher-Yates-style two-index sampling).
-         * <p>
-         * Edge cases:
-         * <ul>
-         *   <li>If {@code input} is {@code null}, {@code null} is returned.</li>
-         *   <li>If {@code input} has fewer than 2 characters, its string representation
-         *       is returned unchanged.</li>
-         * </ul>
-         *
-         * @param input the character sequence to transform; may be {@code null}
-         * @return a new string with two characters swapped, the unchanged string for
-         *         inputs shorter than 2, or {@code null} for a {@code null} input
-         */
-        String swapRandomChars(final CharSequence input) {
-            if (input == null || input.length() < 2) {
-                return input == null ? null : input.toString();
-            }
-
-            int len = input.length();
-            char[] chars = input.toString().toCharArray();
-
-            // pick two distinct indices with uniform probability
-            int index1 = random.nextInt(len);
-            int index2 = random.nextInt(len - 1);
-            if (index2 >= index1) {
-                index2++;
-            }
-
-            char temp = chars[index1];
-            chars[index1] = chars[index2];
-            chars[index2] = temp;
-
-            return new String(chars);
-        }
-
-        /**
-         * Removes a random number of characters at random positions from the input.
-         * <p>
-         * Between 1 and {@code maxRemove} characters are removed (subject to the
-         * available length). Positions are drawn sequentially; indices are recalculated
-         * after each removal.
-         * <p>
-         * Edge cases:
-         * <ul>
-         *   <li>If {@code input} is {@code null}, {@code null} is returned.</li>
-         *   <li>If {@code input} is empty, an empty string is returned.</li>
-         * </ul>
-         *
-         * @param input     the base IBAN string; may be {@code null}
-         * @param maxRemove maximum number of characters to remove (at least 1 is always removed)
-         * @return the shortened string, or {@code null} if {@code input} is {@code null}
-         */
-        String removeRandomChars(CharSequence input, int maxRemove) {
-            if (input == null) {
-                return null;
-            } else if (input.length() == 0) {
-                return "";
-            }
-
-            StringBuilder sb = new StringBuilder(input);
-            int count = random.nextInt(1, Math.min(input.length(), maxRemove + 1));
-
-            for (int i = 0; i < count; i++) {
-                sb.deleteCharAt(random.nextInt(sb.length()));
-            }
-
-            return sb.toString();
-        }
     }
 
     /**
@@ -352,6 +339,56 @@ public final class IbanBenchmarks {
     }
 
     /**
+     * JMH state holding a dataset of DE bank code / account number component pairs used to
+     * drive the {@link BuilderBenchmarks} group.
+     * <p>
+     * DE is used as the representative country because its BBAN structure (bank code + account
+     * number, no national check digit) is uniformly supported by both {@code speedbanking
+     * iban-commons} and {@code iban4j}, keeping the comparison apples-to-apples.
+     */
+    @State(Scope.Benchmark)
+    public static class BuilderState {
+
+        private static final int DE_BANK_CODE_LENGTH      = 8;
+        private static final int DE_ACCOUNT_NUMBER_LENGTH = 10;
+
+        int      targetSize = TARGET_SIZE;
+
+        /**
+         * Randomly generated, numeric DE bank codes ({@value #DE_BANK_CODE_LENGTH} digits each).
+         */
+        String[] bankCodes;
+
+        /**
+         * Randomly generated, numeric DE account numbers ({@value #DE_ACCOUNT_NUMBER_LENGTH}
+         * digits each).
+         */
+        String[] accountNumbers;
+
+        @Setup(Level.Trial)
+        public void setup() {
+            ThreadLocalRandom random = ThreadLocalRandom.current();
+
+            bankCodes = new String[targetSize];
+            accountNumbers = new String[targetSize];
+            for (int i = 0; i < targetSize; i++) {
+                bankCodes[i] = randomDigits(random, DE_BANK_CODE_LENGTH);
+                accountNumbers[i] = randomDigits(random, DE_ACCOUNT_NUMBER_LENGTH);
+            }
+
+            System.out.println("INFO: " + getClass().getSimpleName() + " dataset ready (size: " + targetSize + ")");
+        }
+
+        private static String randomDigits(ThreadLocalRandom random, int length) {
+            StringBuilder sb = new StringBuilder(length);
+            for (int i = 0; i < length; i++) {
+                sb.append((char) ('0' + random.nextInt(10)));
+            }
+            return sb.toString();
+        }
+    }
+
+    /**
      * Benchmark group for validating <em>valid</em> IBANs.
      * <p>
      * All methods measure throughput ({@link Mode#Throughput}) in operations per second
@@ -362,11 +399,11 @@ public final class IbanBenchmarks {
     @Warmup(iterations = 5, time = 2)
     @Measurement(iterations = 5, time = 2)
     @Fork(value = 3, jvmArgs = {
-        "-Xms2G",
-        "-Xmx2G",
-        "-XX:+AlwaysPreTouch",
-        "-XX:+UseSerialGC",
-        "-XX:-StackTraceInThrowable"
+        JVM_ARG_HEAP_MIN,
+        JVM_ARG_HEAP_MAX,
+        JVM_ARG_ALWAYS_PRE_TOUCH,
+        JVM_ARG_SERIAL_GC,
+        JVM_ARG_NO_STACKTRACE
     })
     public static class ValidBenchmarks {
 
@@ -415,11 +452,11 @@ public final class IbanBenchmarks {
     @Warmup(iterations = 5, time = 2)
     @Measurement(iterations = 5, time = 2)
     @Fork(value = 3, jvmArgs = {
-        "-Xms2G",
-        "-Xmx2G",
-        "-XX:+AlwaysPreTouch",
-        "-XX:+UseSerialGC",
-        "-XX:-StackTraceInThrowable"
+        JVM_ARG_HEAP_MIN,
+        JVM_ARG_HEAP_MAX,
+        JVM_ARG_ALWAYS_PRE_TOUCH,
+        JVM_ARG_SERIAL_GC,
+        JVM_ARG_NO_STACKTRACE
     })
     public static class InvalidBenchmarks {
 
@@ -451,6 +488,40 @@ public final class IbanBenchmarks {
         @OperationsPerInvocation(TARGET_SIZE)
         public void bmi5_JBanking(InvalidState state, Blackhole bh) {
             run_JBanking(state, bh);
+        }
+    }
+
+    /**
+     * Benchmark group for IBAN <em>object creation</em> from bank code and account number
+     * components.
+     * <p>
+     * All methods measure throughput ({@link Mode#Throughput}) in operations per second over
+     * {@value IbanBenchmarks#TARGET_SIZE} DE bank code / account number pairs. Only libraries
+     * exposing a component-based builder participate; see the class-level javadoc for details.
+     */
+    @BenchmarkMode(Mode.Throughput)
+    @OutputTimeUnit(TimeUnit.SECONDS)
+    @Warmup(iterations = 5, time = 2)
+    @Measurement(iterations = 5, time = 2)
+    @Fork(value = 3, jvmArgs = {
+        JVM_ARG_HEAP_MIN,
+        JVM_ARG_HEAP_MAX,
+        JVM_ARG_ALWAYS_PRE_TOUCH,
+        JVM_ARG_SERIAL_GC,
+        JVM_ARG_NO_STACKTRACE
+    })
+    public static class BuilderBenchmarks {
+
+        @Benchmark
+        @OperationsPerInvocation(TARGET_SIZE)
+        public void bmb1_IbanCommons(BuilderState state, Blackhole bh) {
+            run_IbanCommons_Build(state, bh);
+        }
+
+        @Benchmark
+        @OperationsPerInvocation(TARGET_SIZE)
+        public void bmb2_Iban4j(BuilderState state, Blackhole bh) {
+            run_Iban4j_Build(state, bh);
         }
     }
 
