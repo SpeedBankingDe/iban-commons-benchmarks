@@ -7,6 +7,7 @@ import org.openjdk.jmh.runner.options.ChainedOptionsBuilder;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
+import java.lang.System.Logger;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
@@ -43,8 +44,10 @@ import java.util.concurrent.TimeUnit;
  * java -jar target/iban-commons-benchmarks.jar BicBenchmarks -prof gc
  * </pre>
  */
-@SuppressWarnings({"checkstyle:MethodName", "checkstyle:VisibilityModifier"})
+@SuppressWarnings({"checkstyle:MethodName", "checkstyle:VisibilityModifier", "java:S100"})
 public final class BicBenchmarks {
+
+    private static final Logger LOGGER = System.getLogger(BicBenchmarks.class.getName());
 
     /**
      * Number of BICs generated per benchmark trial.
@@ -65,21 +68,22 @@ public final class BicBenchmarks {
     /**
      * Standard entry point for executing or profiling the benchmarks directly from the IDE.
      * <p>
-     * Detection of an active IDE profiler runner is based on systemic properties or can be
-     * toggled by modifying the boolean flag below. When profiling, forks are set to 0 to keep
-     * execution inside the IDE's monitored JVM.
+     * Detection of an active IDE profiler runner is based on the {@code profileMode} system
+     * property (defaults to {@code true}). When profiling, forks are set to 0 to keep execution
+     * inside the IDE's monitored JVM.
      *
      * @param args command line arguments passed to the runner
      * @throws Exception if the benchmark execution fails
      */
     public static void main(String[] args) throws Exception {
-        boolean profileMode = true; // set to false for a normal non-profiled trial run in the IDE
+        // run with -DprofileMode=false for a normal non-profiled trial run in the IDE
+        boolean profileMode = Boolean.parseBoolean(System.getProperty("profileMode", "true"));
 
         ChainedOptionsBuilder builder = new OptionsBuilder()
             .include(BicBenchmarks.class.getSimpleName() + ".*");
 
         if (profileMode) {
-            System.out.println("INFO: Running in IDE Profiler Mode (Forks = 0, shortened iterations)");
+            LOGGER.log(Logger.Level.INFO, "Running in IDE Profiler Mode (Forks = 0, shortened iterations)");
             builder.forks(0)
                    .warmupIterations(2)
                    .measurementIterations(3);
@@ -194,7 +198,7 @@ public final class BicBenchmarks {
 
             setupDetail();
 
-            System.out.println("INFO: " + getClass().getSimpleName() + " dataset ready (size: " + targetSize + ")");
+            LOGGER.log(Logger.Level.INFO, "{0} dataset ready (size: {1})", getClass().getSimpleName(), targetSize);
         }
 
         /**
