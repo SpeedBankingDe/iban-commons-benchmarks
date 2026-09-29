@@ -97,6 +97,11 @@
         <dep.garvelink-iban.version>1.17.0</dep.garvelink-iban.version>
         <dep.marcwrobel-jbanking.version>4.3.0</dep.marcwrobel-jbanking.version>
 
+        <!-- this is a JMH microbenchmark suite with no unit tests; coverage is not meaningful -->
+        <sonar.coverage.exclusions>**/*</sonar.coverage.exclusions>
+        <!-- one benchmark method per compared library, following the same shape by design -->
+        <sonar.cpd.exclusions>**/*Benchmarks.java</sonar.cpd.exclusions>
+
         <developer1Id>spannm</developer1Id>
         <developer1Name>Markus Spann</developer1Name>
         <developer1Email>spannm@outlook.de</developer1Email>
