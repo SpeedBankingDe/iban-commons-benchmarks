@@ -1,12 +1,12 @@
 # IBAN Commons Benchmarks
 
-A performance comparison module using the [**Java Microbenchmark Harness (JMH)**](https://github.com/openjdk/jmh) to evaluate throughput and memory allocation of different IBAN libraries in the Java ecosystem.
+A performance comparison module using the [**Java Microbenchmark Harness (JMH)**](https://github.com/openjdk/jmh) to evaluate throughput and memory allocation of different IBAN and BIC libraries in the Java ecosystem.
 
 If you feel other libraries should be included, or have suggestions for this suite, please get in touch.
 
 ## 🎯 Benchmark Scope
 
-Two benchmark groups cover the full validation spectrum:
+`IbanBenchmarks` has three groups, covering validation of valid and invalid IBANs as well as IBAN creation from components:
 
 | Benchmark  | Library                                                                            | Description                                              |
 |:----------:|:-----------------------------------------------------------------------------------|:---------------------------------------------------------|
@@ -20,6 +20,10 @@ Two benchmark groups cover the full validation spectrum:
 |   `bmi3`   | `Apache Commons Validator`                                                         | Same as bmv3 – **invalid** IBANs (rejection cost)        |
 |   `bmi4`   | `garvelink iban`                                                                   | Same as bmv4 – **invalid** IBANs (rejection cost)        |
 |   `bmi5`   | `jbanking`                                                                         | Same as bmv5 – **invalid** IBANs (rejection cost)        |
+|   `bmb1`   | `iban-commons`                                                                     | IBAN creation from bank code and account number (DE)     |
+|   `bmb2`   | `iban4j`                                                                           | Same as bmb1                                             |
+
+The builder group only covers `iban-commons` and `iban4j`, the other libraries offer no comparable API to build an IBAN from its components.
 
 The test dataset uses compact (unformatted) IBAN strings across all supported countries, generated randomly per run to prevent JIT over-specialization.
 Each invalid IBAN is derived from a valid one via `RandomIban.invalidString()`, which applies one of six sabotage strategies with equal probability:
@@ -31,6 +35,8 @@ All forks run with this JVM flag, which suppresses stack trace generation.
 This isolates the **pure algorithmic cost** of validation and makes the comparison fair for libraries that use exceptions for control flow (notably `iban4j`).
 It does **not** reflect default production behaviour.
 For a production-realistic measurement, remove the flag from `@Fork` and re-run.
+
+`BicBenchmarks` compares BIC validation of `iban-commons` (`bmv1`/`bmi1`), `iban4j` (`bmv2`/`bmi2`) and `jbanking` (`bmv3`/`bmi3`), again on valid and invalid input.
 
 ## ⚙️ Requirements & Environment
 
@@ -58,22 +64,24 @@ The provided scripts detect system information, configure SerialGC for minimal m
 
 **Linux:**
 ```bash
-./target/run-benchmarks.sh
+./target/run-iban-benchmarks.sh
+./target/run-bic-benchmarks.sh
 ```
 
 **Windows:**
 ```batch
-target\run-benchmarks.cmd
+target\run-iban-benchmarks.cmd
+target\run-bic-benchmarks.cmd
 ```
 
 Or run the JAR directly with standard JMH options:
 
 ```bash
-# Run all benchmarks
+# Run all IBAN benchmarks
 java -jar target/iban-commons-benchmarks.jar IbanBenchmarks
 
 # Run only the valid-IBAN group with custom iteration settings
-java -jar target/iban-commons-benchmarks.jar "bm[1-5]" -i 10 -r 5s
+java -jar target/iban-commons-benchmarks.jar "IbanBenchmarks.*bmv" -i 10 -r 5s
 
 # Run with GC profiling
 java -jar target/iban-commons-benchmarks.jar IbanBenchmarks -prof gc
