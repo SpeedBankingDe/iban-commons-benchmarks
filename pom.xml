@@ -83,7 +83,7 @@
     </issueManagement>
 
     <properties>
-        <releaseJavaVersion>17</releaseJavaVersion>
+        <releaseJavaVersion>21</releaseJavaVersion>
         <buildJavaVersion>21</buildJavaVersion>
 
         <project.rootDirectory>${maven.multiModuleProjectDirectory}</project.rootDirectory>
@@ -91,7 +91,7 @@
         <jmhMainClass>org.openjdk.jmh.Main</jmhMainClass>
         <dep.jmh.version>1.37</dep.jmh.version>
 
-        <dep.iban-commons.version>1.8.11</dep.iban-commons.version>
+        <dep.iban-commons.version>1.8.12-SNAPSHOT</dep.iban-commons.version>
         <dep.iban4j.version>3.2.14-RELEASE</dep.iban4j.version> <!-- includes NCD -->
         <dep.apache-commons-validator.version>1.11.0</dep.apache-commons-validator.version>
         <dep.garvelink-iban.version>1.17.0</dep.garvelink-iban.version>
@@ -119,19 +119,19 @@
 
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss.SSS</maven.build.timestamp.format>
 
-        <dep.checkstyle.version>13.11.0</dep.checkstyle.version>
+        <dep.checkstyle.version>14.3.0</dep.checkstyle.version>
         <check.checkstyle.ruleset>${project.rootDirectory}/build/checkstyle-rules.xml</check.checkstyle.ruleset>
 
         <!-- Plugin versions (alphabetically) -->
         <dep.plugin.antrun>3.2.0</dep.plugin.antrun>
         <dep.plugin.checkstyle.version>3.6.0</dep.plugin.checkstyle.version>
-        <dep.plugin.compiler.version>3.15.0</dep.plugin.compiler.version>
+        <dep.plugin.compiler.version>3.16.0</dep.plugin.compiler.version>
         <dep.plugin.enforcer.version>3.6.3</dep.plugin.enforcer.version>
-        <dep.plugin.jar.version>3.5.0</dep.plugin.jar.version>
+        <dep.plugin.jar.version>3.5.1</dep.plugin.jar.version>
         <dep.plugin.resources.version>3.5.0</dep.plugin.resources.version>
         <dep.plugin.shade.version>3.6.2</dep.plugin.shade.version>
-        <dep.plugin.surefire.version>3.5.6</dep.plugin.surefire.version>
-        <dep.plugin.versions.version>2.21.0</dep.plugin.versions.version>
+        <dep.plugin.surefire.version>3.6.0</dep.plugin.surefire.version>
+        <dep.plugin.versions.version>2.23.0</dep.plugin.versions.version>
     </properties>
 
     <dependencies>
