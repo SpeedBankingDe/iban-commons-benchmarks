@@ -22,8 +22,9 @@ If you feel other libraries should be included, or have suggestions for this sui
 |   `bmi5`   | `jbanking`                                                                         | Same as bmv5 – **invalid** IBANs (rejection cost)        |
 |   `bmb1`   | `iban-commons`                                                                     | IBAN creation from bank code and account number (DE)     |
 |   `bmb2`   | `iban4j`                                                                           | Same as bmb1                                             |
+|   `bmb3`   | `iban-commons`                                                                     | IBAN creation with calculated national check digit (FR)  |
 
-The builder group only covers `iban-commons` and `iban4j`, the other libraries offer no comparable API to build an IBAN from its components.
+The builder group only covers `iban-commons` and `iban4j`, the other libraries offer no comparable API to build an IBAN from its components. `bmb3` only covers `iban-commons`, since iban4j expects the national check digit to be passed in.
 
 The test dataset uses compact (unformatted) IBAN strings across all supported countries, generated randomly per run to prevent JIT over-specialization.
 Each invalid IBAN is derived from a valid one via `RandomIban.invalidString()`, which applies one of six sabotage strategies with equal probability:

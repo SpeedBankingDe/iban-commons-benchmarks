@@ -23,7 +23,9 @@ import java.util.concurrent.TimeUnit;
  *       from bank code and account number components. Limited to libraries that expose a
  *       component-based builder ({@code speedbanking iban-commons} and {@code iban4j});
  *       {@code Apache Commons Validator}, {@code garvelink iban}, and {@code marcwrobel jbanking}
- *       offer no equivalent construction API and are therefore excluded from this group.</li>
+ *       offer no equivalent construction API and are therefore excluded from this group.
+ *       {@code bmb3} builds FR IBANs, whose national check digit only
+ *       {@code speedbanking iban-commons} calculates itself.</li>
  * </ul>
  * <p>
  * Running both groups together gives a realistic picture of library performance across
@@ -201,6 +203,25 @@ public final class IbanBenchmarks {
             bh.consume(de.speedbanking.iban.IbanRegistry.DE
                 .<de.speedbanking.iban.IbanBuilder.StandardIbanBuilder>builder()
                 .bankCode(state.bankCodes[i])
+                .accountNumber(state.accountNumbers[i])
+                .build());
+        }
+    }
+
+    /**
+     * Benchmarks the object-creation throughput of the {@code speedbanking iban-commons} library
+     * for FR, a country with a national check digit that the builder calculates, building a fresh
+     * {@link de.speedbanking.iban.Iban} from bank code, branch code and account number.
+     *
+     * @param state JMH state holding the FR component dataset
+     * @param bh    {@link Blackhole} to prevent dead-code elimination by the JIT compiler
+     */
+    static void run_IbanCommons_BuildFr(FrBuilderState state, Blackhole bh) {
+        for (int i = 0; i < state.bankCodes.length; i++) {
+            bh.consume(de.speedbanking.iban.IbanRegistry.FR
+                .<de.speedbanking.iban.IbanBuilder.IbanBuilderWithBranchCode>builder()
+                .bankCode(state.bankCodes[i])
+                .branchCode(state.branchCodes[i])
                 .accountNumber(state.accountNumbers[i])
                 .build());
         }
@@ -393,6 +414,43 @@ public final class IbanBenchmarks {
     }
 
     /**
+     * Randomly generated FR bank codes, branch codes and account numbers for
+     * {@link BuilderBenchmarks#bmb3_IbanCommonsFr}. Only {@code speedbanking iban-commons}
+     * participates, since FR requires a national check digit that the builder calculates.
+     */
+    @State(Scope.Benchmark)
+    public static class FrBuilderState {
+
+        private static final String ALPHANUMERIC = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+        String[] bankCodes;
+        String[] branchCodes;
+        String[] accountNumbers;
+
+        @Setup(Level.Trial)
+        public void setup() {
+            ThreadLocalRandom random = ThreadLocalRandom.current();
+
+            bankCodes = new String[TARGET_SIZE];
+            branchCodes = new String[TARGET_SIZE];
+            accountNumbers = new String[TARGET_SIZE];
+            for (int i = 0; i < TARGET_SIZE; i++) {
+                bankCodes[i] = randomChars(random, "0123456789", 5);
+                branchCodes[i] = randomChars(random, "0123456789", 5);
+                accountNumbers[i] = randomChars(random, ALPHANUMERIC, 11);
+            }
+        }
+
+        private static String randomChars(ThreadLocalRandom random, String chars, int length) {
+            StringBuilder sb = new StringBuilder(length);
+            for (int i = 0; i < length; i++) {
+                sb.append(chars.charAt(random.nextInt(chars.length())));
+            }
+            return sb.toString();
+        }
+    }
+
+    /**
      * Benchmark group for validating <em>valid</em> IBANs.
      * <p>
      * All methods measure throughput ({@link Mode#Throughput}) in operations per second
@@ -526,6 +584,12 @@ public final class IbanBenchmarks {
         @OperationsPerInvocation(TARGET_SIZE)
         public void bmb2_Iban4j(BuilderState state, Blackhole bh) {
             run_Iban4j_Build(state, bh);
+        }
+
+        @Benchmark
+        @OperationsPerInvocation(TARGET_SIZE)
+        public void bmb3_IbanCommonsFr(FrBuilderState state, Blackhole bh) {
+            run_IbanCommons_BuildFr(state, bh);
         }
     }
 
